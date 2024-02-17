@@ -96,6 +96,7 @@
 ;         if child is not visited:
 ;             dfs(child)
 
+#|
 (define (dfs graph node)
 	(let* ((adjacency-list-undirected (adjacency-list graph #f)) ; let* supports the sequenced binding of variables, where each initial value expression can use the previous bindings.
 		;; (adjacency-list-directed (adjacency-list graph #t)) ;; vjerojatno mi ne treba u ovoj funkciji
@@ -104,6 +105,8 @@
 		((dfs-recursive node)
 			(append visited '(node)) ; ovo samo kreira listu, treba pozvat set! funkciju
 			(append tree-links (get-corresponding-element node all-nodes )
+			
+|#
 		
 
 

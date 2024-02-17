@@ -3,11 +3,21 @@
 		(lambda (x) (/ (- x (car other-point)) (- (car point) (car other-point)))))  
 	(define (list-of-factors point) ; returns list of functions of x
 		(map (lambda (p) (basis-factor point p)) (remove (lambda (p) (equal? point p)) points)))
+	(define (apply-f-to-the-list-of-functions f functions)
+		(lambda (x) (apply f (map (lambda (func) (func x)) functions))))
+	(define (sum-list-of-functions functions)
+		(apply-f-to-the-list-of-functions + functions))
 	(define (multiply-list-of-functions functions)
-		(lambda (x)
-			(apply * (map (lambda (func) (func x)) functions))))
-	(multiply-list-of-functions (list-of-factors point))
+		(apply-f-to-the-list-of-functions * functions))
+	(define (multiply-function-with-number number function) ; radi
+		(lambda (x) (* number ((lambda (func) (func x)) function))))
+	(define (basis-polynomial point)
+		(multiply-list-of-functions (list-of-factors point)))
+	(map multiply-function-with-number ((map cadr points) (map basis-polynomial points)))
 )
+	
+			
+
 ;; add error message if 2 x's are the same
 
 (define (linspace start end num-points)
@@ -21,15 +31,7 @@
 	(define scaled-linspace (map (lambda (x) (* x (- end start))) linspace-from-0-to-1))
 	(map (lambda (x) (+ start x)) scaled-linspace))
 
-(define points '((1 2) (3 4) (5 6)))
-(define point '(3 4))
-(define xs (linspace -10 10 1000))
-(define ys (map (lagrange-interpolation points) xs))
 
 
-(call-with-output-file "output.txt"
-	(lambda (output-port)
-		(display xs output-port)
-		(display ys output-port)
-	))
 
+(multiply-function-with-number 4 (lambda (x) (+ 1 x)))
