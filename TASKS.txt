@@ -1,22 +1,5 @@
-implement Depth-First Search (DFS) to create a tree
-
-PSEUDOCODE:
-function DFS(graph, current_vertex, tree):
-    mark current_vertex as visited
-    add current_vertex to tree
-    
-    for each neighbor in graph.adjacency_list[current_vertex]:
-        if neighbor is not visited:
-            create an edge (current_vertex, neighbor) in the tree
-            recursively call DFS(graph, neighbor, tree)
-
-
 create the fundamental circuit matrix G
+	implement Depth-First Search (DFS) to create a tree
 
-napravi funkcije takvima da su sve veličine konstantne. tako nećeš imat problema sa redoslijedom
-
-functions.scm se mora moć pozvat sama bez errora (bez varijabli unutar definicije funkcije)
-
-lagrange polynomial
 
 
