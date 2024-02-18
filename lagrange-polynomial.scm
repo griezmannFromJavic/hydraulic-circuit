@@ -4,21 +4,12 @@
 	(define (list-of-factors point) ; returns list of functions of x
 		(map (lambda (p) (basis-factor point p)) (remove (lambda (p) (equal? point p)) points)))
 
-	(define (sum-list-of-functions functions)
-		(apply-f-to-the-list-of-functions + functions))
-	(define (multiply-list-of-functions functions)
-		(apply-f-to-the-list-of-functions * functions))
-	(define (multiply-function-with-number number function) ; radi
-		(lambda (x) (* number ((lambda (func) (func x)) function))))
-
 	(define (basis-polynomial point)
 		(multiply-list-of-functions (list-of-factors point)))
 		
 	(map multiply-function-with-number (map cadr points) (map basis-polynomial points))
 	)
 ;; add error message if 2 x's are the same
-
-
 
 (define (linspace start end num-points)
 	(define (first-n-natural-numbers n)

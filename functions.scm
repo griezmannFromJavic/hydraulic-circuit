@@ -48,3 +48,12 @@
 
 (define (apply-f-to-the-list-of-functions f functions)
 	(lambda (x) (apply f (map (lambda (func) (func x)) functions))))
+	
+(define (sum-list-of-functions functions)
+	(apply-f-to-the-list-of-functions + functions))
+	
+(define (multiply-list-of-functions functions)
+	(apply-f-to-the-list-of-functions * functions))
+	
+(define (multiply-function-with-number number function) ; radi
+	(lambda (x) (* number ((lambda (func) (func x)) function))))

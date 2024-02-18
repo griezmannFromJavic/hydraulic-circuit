@@ -19,7 +19,6 @@
 |#
 
 (define points '((1 2) (3 7) (5 6) (7 12)))
-; (define point '(5 6)) ;; treba radit bez ovog
 (define xs (linspace -10 10 1001))
 (define ys (map (lagrange-interpolation points) xs))
 
