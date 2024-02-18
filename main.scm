@@ -4,22 +4,8 @@
 (load "lagrange-polynomial.scm")
 (load "write-to-csv.scm")
 
-#|
-(display "all-nodes: ") 
-(newline)
-(display all-nodes)
-(newline)
-(display "adjacency list for directed graph: ")
-(newline)
-(display (adjacency-list system #t))
-(newline)
-(display "adjacency list for undirected graph: ")
-(newline)
-(display (adjacency-list system #f))
-|#
 
-(define points '((1 2) (3 7) (5 6) (7 12)))
-(define xs (linspace -10 10 1001))
+(define points '((0 10) (3 9) (10 0) (4 7)))
+(define xs (linspace 1 10 101))
 (define ys (map (lagrange-interpolation points) xs))
-
 (write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))

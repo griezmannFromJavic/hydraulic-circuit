@@ -57,3 +57,18 @@
 	
 (define (multiply-function-with-number number function) ; radi
 	(lambda (x) (* number ((lambda (func) (func x)) function))))
+	
+	
+		
+
+(define (linspace start end num-points)
+	(define (first-n-natural-numbers n)
+		(define (helper count result)
+			(if (= count n)
+				(reverse result)
+				(helper (+ count 1) (cons count result))))
+			(helper 0 '()))
+	(define linspace-from-0-to-1 (map (lambda (x) (/ x (- num-points 1))) (first-n-natural-numbers num-points)))
+	(define scaled-linspace (map (lambda (x) (* x (- end start))) linspace-from-0-to-1))
+	(map (lambda (x) (+ start x)) scaled-linspace)
+	)
