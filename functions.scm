@@ -37,29 +37,22 @@
         (display (list-ref (list-ref matrix i) j))
         (display " "))
       (newline))))
-				
-(define (set-difference set-a set-b)
-  (cond ((null? set-a) '())  ; If set-a is empty, return an empty set
-        ((memv (car set-a) set-b)  ; If the first element of set-a is in set-b
-         (set-difference (cdr set-a) set-b))  ; Skip the element and continue with the rest of set-a
-        (else  ; If the first element of set-a is not in set-b
-         (cons (car set-a)  ; Include the element in the result
-               (set-difference (cdr set-a) set-b)))))  ; Continue with the rest of set-a
 
 (define (apply-f-to-the-list-of-functions f functions)
-	(lambda (x) (apply f (map (lambda (func) (func x)) functions))))
+	(lambda (x) (apply f (map (lambda (func) (func x)) functions)))
+	)
 	
 (define (sum-list-of-functions functions)
-	(apply-f-to-the-list-of-functions + functions))
+	(apply-f-to-the-list-of-functions + functions)
+	)
 	
 (define (multiply-list-of-functions functions)
-	(apply-f-to-the-list-of-functions * functions))
+	(apply-f-to-the-list-of-functions * functions)
+	)
 	
-(define (multiply-function-with-number number function) ; radi
-	(lambda (x) (* number ((lambda (func) (func x)) function))))
-	
-	
-		
+(define (multiply-function-with-number number function)
+	(lambda (x) (* number ((lambda (func) (func x)) function)))
+	)
 
 (define (linspace start end num-points)
 	(define (first-n-natural-numbers n)
