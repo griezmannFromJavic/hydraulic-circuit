@@ -1,18 +1,18 @@
 ; contains informatin about network
 ; (outlet-node inlet-node)
 
-(define system '(
-(0 4)
-(5 0)
-(0 1)
-(0 2)
-(1 4)
-(4 5)
-(2 5)
-(1 3)
-(2 3)
-(3 4)
-(3 5)
+(define system (list
+(list 0 4)
+(list 5 0)
+(list 0 1)
+(list 0 2)
+(list 1 4)
+(list 4 5)
+(list 2 5)
+(list 1 3)
+(list 2 3)
+(list 3 4)
+(list 3 5)
 ))
 
 (define outlet-nodes (map car system))
