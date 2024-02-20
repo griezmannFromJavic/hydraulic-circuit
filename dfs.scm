@@ -45,8 +45,6 @@
 
 
 (define (dfs graph node)
-	(define adjacency-list-undirected (adjacency-list graph #f))
-		;; (adjacency-list-directed (adjacency-list graph #t)) ;; vjerojatno mi ne treba u ovoj funkciji
 	(define (neighbour node)
 		
 	(define visited '())
