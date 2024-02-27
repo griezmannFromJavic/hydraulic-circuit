@@ -3,11 +3,13 @@
 (define tree '())
 (define visited '(inital-node))
 	(define (dfs node)
-	;;(display node)
+	(display node)
+	(newline)
 	"operation for one node"
 		(define neighbours (cadr (assoc node adjacency-list-undirected)))
 		(define unvisited-neighbours (set-difference neighbours visited))
-		(set! visited (list node visited))
+		(display unvisited-neighbours)
+		(set! visited (cons node visited))
 		(set! tree
 			(append tree
 				(map (lambda (neighbour) (list node neighbour)) unvisited-neighbours)
@@ -16,7 +18,7 @@
 			tree
 			(map dfs unvisited-neighbours)
 			))
-	tree)
+	(dfs initial-node))
 
-;; (cadr (assoc 4 adjacency-list-undirected)) ; radi
+
 
