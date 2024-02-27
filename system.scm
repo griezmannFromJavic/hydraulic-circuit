@@ -2,8 +2,8 @@
 ; (outlet-node inlet-node)
 
 (define system (list
-(list 0 4)
-(list 5 0)
+(list 0 4) ; first links
+(list 5 0) ; second link
 (list 0 1)
 (list 0 2)
 (list 1 4)
@@ -12,7 +12,7 @@
 (list 1 3)
 (list 2 3)
 (list 3 4)
-(list 3 5)
+(list 3 5) ; n'th link
 ))
 
 (define outlet-nodes (map car system))
@@ -45,9 +45,9 @@
 								((and (not is-directed?) (equal? node (cadr link))) (set! node-neighbour (append node-neighbour (list (car link)))))
 								))
 							graph)
-						(set! neighbours (append neighbours (list node node-neighbour)))))
+						(set! neighbours (cons (list node node-neighbour) neighbours))))
 					all-nodes)
-				neighbours))
+				(reverse neighbours)))
 
 (define adjacency-list-directed (adjacency-list system #t))
 (define adjacency-list-undirected (adjacency-list system #f))
