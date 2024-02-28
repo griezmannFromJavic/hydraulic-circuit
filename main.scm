@@ -12,4 +12,6 @@
 (write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))
 |#
 
+(display adjacency-list-undirected)
+(newline)
 (dfs-init system 0)
