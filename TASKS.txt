@@ -1,5 +1,5 @@
-create the fundamental circuit matrix G
-	implement Depth-First Search (DFS) to create a tree
+Depth-First Search (DFS) may not fill every graph. check edgecases for implemented algorithm
+the problem may lie in the fact that the tree generation continues only on one branch
 
 
 
