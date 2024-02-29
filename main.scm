@@ -1,8 +1,8 @@
-(load "solver-constants.scm")
+;(load "solver-constants.scm")
 (load "system.scm")
 (load "functions.scm")
-(load "lagrange-polynomial.scm")
-(load "write-to-csv.scm")
+;(load "lagrange-polynomial.scm")
+;(load "write-to-csv.scm")
 (load "dfs.scm")
 
 #|
@@ -14,4 +14,5 @@
 
 (display adjacency-list-undirected)
 (newline)
-(dfs-init system 0)
+(newline)
+(display (dfs-init system 0))
