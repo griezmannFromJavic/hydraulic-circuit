@@ -11,4 +11,3 @@
 	(sum-list-of-functions (map multiply-function-with-number (map cadr points) (map basis-polynomial points)))
 	)
 ;; add error message if 2 x's are the same
-

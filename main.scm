@@ -3,6 +3,7 @@
 (load "functions.scm")
 ;(load "lagrange-polynomial.scm")
 ;(load "write-to-csv.scm")
+(load "matrix-generator.scm")
 (load "dfs.scm")
 
 #|
@@ -13,6 +14,9 @@
 |#
 
 (display adjacency-list-undirected)
-(newline)
-(newline)
+(newline) (newline)
 (display (dfs-init system 0))
+(newline) (newline)
+(define example-tree (dfs-init system 0))
+(display
+ ((fundamental-circuit-matrix system example-tree) 0 1))
