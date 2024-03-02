@@ -1,6 +1,6 @@
 ; contains informatin about network
 ; (outlet-node inlet-node)
-
+#|
 (define system (list
 (list 0 4) ; first links
 (list 5 0) ; second link
@@ -14,6 +14,19 @@
 (list 3 4)
 (list 3 5) ; n'th link
 ))
+|#
+
+
+; system to test dfs algorithm
+(define system (list
+(list 1 2)
+(list 1 3) 
+(list 2 4)
+(list 2 5)
+(list 3 6)
+(list 4 5)
+))
+
 
 (define outlet-nodes (map car system))
 (define inlet-nodes (map cadr system))

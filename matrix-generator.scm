@@ -7,12 +7,11 @@
 	(cond
 		((equal? neighbour link) 1)
 		((equal? owner link) -1)
-		(#t 0)
+		(else 0)
 		))))
 
 ;; example usage
 ;; ((incidence-matrix system) 1 0)
-
 
 (define (fundamental-circuit-matrix graph tree)
   (lambda (node link)
