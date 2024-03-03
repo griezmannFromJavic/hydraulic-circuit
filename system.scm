@@ -1,5 +1,6 @@
 ; contains informatin about network
 ; (outlet-node inlet-node)
+
 #|
 (define system (list
 (list 0 4) ; first links
