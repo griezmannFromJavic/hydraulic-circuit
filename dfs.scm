@@ -25,24 +25,37 @@ print("Following is the Depth-First Search")
 dfs(visited, graph, '5')
 |#
 
+#|
 ; python inspired
+(define (neighbours node) (cadr (assoc node adjacency-list-undirected)))
+(define tree '())
 
 (define (dfs visited graph node)
-	(let* (
-		(neighbours (cadr (assoc node adjacency-list-undirected)))
-		(unvisited-neighbours (set-difference neighbours visited))
-		)
+	(display "node: ")
+	(display node)
+	(newline)
 	(if (not (member node visited))
-		(set! visited (cons node visited))
-		(reverse visited) ; return valjda
+		(begin
+			(display "visited before: ")
+			(display visited)
+			(newline)
+			(set! visited (cons node visited))
+			(set! tree (cons (list node node) tree))
+			)
+		tree ; return valjda
 		)
+		(display "visited after: ")
 		(display visited)
 		(newline)
-		(map (lambda (neighbour) (dfs visited graph neighbour)) unvisited-neighbours)
-		))
+		(display "----------------")
+		(newline)
+		(map (lambda (neighbour) (dfs visited graph neighbour)) (set-difference (neighbours node) visited))
+		)
+		
+		
 
 ;(dfs '() system 1)
-
+|#
 
 
 
@@ -51,7 +64,6 @@ dfs(visited, graph, '5')
 
 
 ; old code
-#|
 (define (dfs-init graph initial-node)
 (let  (
       (tree '())
@@ -90,4 +102,3 @@ dfs(visited, graph, '5')
 			
 	(dfs initial-node)
 	))
-|#
