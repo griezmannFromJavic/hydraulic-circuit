@@ -15,12 +15,5 @@
 
 (display adjacency-list-undirected)
 (newline) (newline)
-(dfs-init system 1)
+(dfs-init system 4)
 
-#|
-(display (dfs-init system 0))
-(newline) (newline)
-(define example-tree (dfs-init system 0))
-(display
-	((fundamental-circuit-matrix system example-tree) 0 1))
-	|#
