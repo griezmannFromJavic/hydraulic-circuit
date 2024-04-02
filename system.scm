@@ -32,15 +32,6 @@
 (define outlet-nodes (map car system))
 (define inlet-nodes (map cadr system))
 (define num-links (length system))
-
-(define (remove-duplicates lst)
-  (cond ((null? lst) '())
-        ((null? (cdr lst)) lst)
-        (else (cons (car lst)
-                    (remove-duplicates
-                    	(filter (lambda (x) (not (= (car lst) x))) (cdr lst))
-                    	)))))
-                    	
 (define all-nodes (remove-duplicates (append inlet-nodes outlet-nodes)))
 (define num-nodes (length all-nodes))
 

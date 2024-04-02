@@ -1,3 +1,11 @@
+(define (remove-duplicates lst)
+  (cond ((null? lst) '())
+        ((null? (cdr lst)) lst)
+        (else (cons (car lst)
+                    (remove-duplicates
+                    	(filter (lambda (x) (not (= (car lst) x))) (cdr lst))
+                    	)))))
+
 (define (get-corresponding-element element list1 list2)
 	"takes an element from the first list, along with two lists, and returns the element from the second list located at the same index as the given element in the first list."
 	(if (or (null? list1) (null? list2)) '()
