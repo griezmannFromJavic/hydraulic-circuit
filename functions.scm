@@ -7,7 +7,7 @@
                     	)))))
 
 (define (get-corresponding-element element list1 list2)
-	"takes an element from the first list, along with two lists, and returns the element from the second list located at the same index as the given element in the first list."
+"takes an element from the first list, along with two lists, and returns the element from the second list located at the same index as the given element in the first list."
 	(if (or (null? list1) (null? list2)) '()
 		(if (equal? element (car list1)) (car list2)
 		(get-corresponding-element element (cdr list1) (cdr list2)))))

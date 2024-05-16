@@ -13,7 +13,11 @@ def bfs(adj_list, initial_node):
                 visited[neighbor] = True
                 parent[neighbor] = current_node
                 queue.append(neighbor)
-
+                print(current_node)
+                print(visited)
+                print(queue)
+                print(parent)
+                print("--------------------------")
     return parent
 
 # Example usage:
@@ -28,5 +32,5 @@ adj_list = {
 
 initial_node = 'A'
 tree = bfs(adj_list, initial_node)
-print(tree)
+
 
