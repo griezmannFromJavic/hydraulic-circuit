@@ -1,28 +1,30 @@
-(define (dfs-init graph initial-node)
-  (define (neighbours node) (cadr (assoc node adjacency-list-undirected)))
-  
-  (define (dfs parent child tree visited)
-    (define (unvisited-neighbours node) (set-difference (neighbours node) visited))
-    
-    (define new-tree (cons (list parent child) tree))
-    (define new-visited (cons child visited))
-    
-    (if (null? (unvisited-neighbours child))
-        (reverse new-tree)
-        (begin
-          (display "visited: ") (display new-visited) (newline) (newline)
-          (display "unvisited neighbours: ") (display (unvisited-neighbours child)) (newline) (newline)
-          (display "tree: ") (display tree) (newline) (newline)
-          (display "new tree: ") (display new-tree) (newline) (newline)
-          (display "-----------------------------------") (newline) (newline)
-          (map (lambda (x) (dfs child x new-tree new-visited)) (unvisited-neighbours child))
-          )))
+(define (dfs-init adj-list initial-node)
+  (define (neighbours node) (cadr (assoc node adj-list)))
 
-  ; Initiating DFS from each unvisited node
-  (let loop ((nodes (map car graph)) (tree '()) (visited '()))
-    (cond
-      ((null? nodes) tree)
-      ((memq (car nodes) visited) (loop (cdr nodes) tree visited)) ; Skip visited nodes
-      (else (loop (cdr nodes) (dfs #f (car nodes) tree visited) (cons (car nodes) visited))))))
+  (define (dfs node visited tree)
+    (let ((new-visited (cons node visited)))
+      (fold-right 
+        (lambda (neighbor result)
+          (let ((result-tree (car result))
+                (result-visited (cdr result)))
+            (if (memq neighbor result-visited)
+                result
+                (let ((dfs-result (dfs neighbor result-visited (cons (list node neighbor) result-tree))))
+                  (cons (car dfs-result) (cdr dfs-result))))))
+        (cons tree new-visited)
+        (neighbours node))))
 
+  (car (dfs initial-node '() '())))
+
+; Example usage:
+; Assuming graph is an association list like this:
+(define graph '((1 (2 3))
+                (2 (1 4 5))
+                (3 (1 6 7))
+                (4 (2 5))
+                (5 (2 4))
+                (6 (3 7))
+                (7 (3 6))
+                ))
+(dfs-init graph 1)
 

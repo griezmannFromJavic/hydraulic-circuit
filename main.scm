@@ -12,10 +12,7 @@
 ;(define ys (map (lagrange-interpolation points) xs))
 ;(write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))
 
-; does not work!
-(display adjacency-list-undirected)
-(newline) (newline)
-(dfs-init system 4)
-
 ;(display adjacency-list-undirected)
+;(newline) (newline)
+;(dfs-init adjacency-list-undirected 3)
 
