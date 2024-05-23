@@ -1,20 +1,14 @@
-# Project Title
+# Hydraulic circuit
 
 ## Introduction
 
-This is an introduction to the project.
+The program takes for an input the list containing two information about inlet nodes: its inflow and outflow node, and the pressure-flow characteristics points.
+The program then calculates the `(n-1)`-degree polynomial for given `n` points [^1].
 
-### Features
+## Footnotes
 
-- Feature 1
-- Feature 2
-- Feature 3
+[^1]: The degree can be smaller if you decide to overdetermine the polynomial. Overdetermination does not cause bugs.
 
-#### Installation
 
-To install the project, follow these steps:
 
-```bash
-git clone https://github.com/username/repository.git
-cd repository
 
