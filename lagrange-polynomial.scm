@@ -11,3 +11,11 @@
 	(sum-list-of-functions (map multiply-function-with-number (map cadr points) (map basis-polynomial points)))
 	)
 ;; add error message if 2 x's are the same
+
+; EXAMPLE USAGE:
+;(define points '((1 10) (2 2) (3 3) (4 7) (6 5) (10 1)))
+;(define xs (linspace 0 10 101))
+;(define ys (map (lagrange-interpolation points) xs))
+;(write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))
+
+

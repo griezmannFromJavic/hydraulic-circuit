@@ -16,15 +16,17 @@
 
   (car (dfs initial-node '() '())))
 
-; Example usage:
-; Assuming graph is an association list like this:
-(define graph '((1 (2 3))
-                (2 (1 4 5))
-                (3 (1 6 7))
-                (4 (2 5))
-                (5 (2 4))
-                (6 (3 7))
-                (7 (3 6))
-                ))
-(dfs-init graph 1)
+
+; example usage:
+#|
+(display 
+	((incidence-matrix links) 3 3)
+)
+(newline)
+
+(define example-tree (dfs-init adjacency-list-undirected 3))
+(display
+	((fundamental-circuit-matrix links example-tree) 3 3)
+)
+|#
 

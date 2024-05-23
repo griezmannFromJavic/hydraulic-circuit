@@ -1,37 +1,26 @@
-; contains informatin about network
-; (outlet-node inlet-node)
+; contains information about network: the nodes of a given link and the points of a pressure characteristics
+; ((outlet-node inlet-node) ((x1 y1) (x2 y2) ... (xn yn))
 
-#|
-(define system (list
-(list 0 4) ; first links
-(list 5 0) ; second link
-(list 0 1)
-(list 0 2)
-(list 1 4)
-(list 4 5)
-(list 2 5)
-(list 1 3)
-(list 2 3)
-(list 3 4)
-(list 3 5) ; n'th link
-))
-|#
+(define system '(
+	((0 4) ((0 4) (1 3) (2 0))) ; first links
+	((5 0) ((0 0) (1 1) (2 4))) ; second link
+	((0 1) ((0 0) (1 1) (2 4)))
+	((0 2) ((0 0) (1 1) (2 4)))
+	((1 4) ((0 0) (1 1) (2 4)))
+	((4 5) ((0 0) (1 1) (2 4)))
+	((2 5) ((0 0) (1 1) (2 4)))
+	((1 3) ((0 0) (1 1) (2 4)))
+	((2 3) ((0 0) (1 1) (2 4)))
+	((3 4) ((0 0) (1 1) (2 4)))
+	((3 5) ((0 0) (1 1) (2 4))) ; n'th link
+	))
 
-
-; system to test dfs algorithm
-(define system (list
-(list 1 2)
-(list 1 3) 
-(list 2 4)
-(list 2 5)
-(list 3 6)
-(list 4 5)
-))
+(define links (map car system))
 
 
-(define outlet-nodes (map car system))
-(define inlet-nodes (map cadr system))
-(define num-links (length system))
+(define outlet-nodes (map car links))
+(define inlet-nodes (map cadr links))
+(define num-links (length links))
 (define all-nodes (remove-duplicates (append inlet-nodes outlet-nodes)))
 (define num-nodes (length all-nodes))
 
@@ -54,5 +43,5 @@
 					all-nodes)
 				(reverse neighbours)))
 
-(define adjacency-list-directed (adjacency-list system #t))
-(define adjacency-list-undirected (adjacency-list system #f))
+(define adjacency-list-directed (adjacency-list links #t))
+(define adjacency-list-undirected (adjacency-list links #f))
