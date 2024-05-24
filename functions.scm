@@ -26,7 +26,7 @@
 		 (null? (remove-duplicates (set-difference s1 s2)))))
 
 (define (incidence-matrix system)
-	"Creates incidence matrix from system descriprion."
+	"Creates incidence matrix from system description."
 	(list-tabulate num-nodes
 		(lambda (i)
 			(list-tabulate num-links
