@@ -1,4 +1,4 @@
-# Hydraulic Circuit
+# Hydraulic Circuit Solver
 
 This program is mostly based on the work by [M. A. Hall](https://onlinelibrary.wiley.com/doi/abs/10.1002/net.3230060204).
 
