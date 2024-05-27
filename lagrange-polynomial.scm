@@ -23,12 +23,14 @@
 ;(define xs (list 0 1 2 3 4 5 6 7 8 9))
 ;(map (lagrange-interpolation points) xs)
 
-(define basis-factor-derivation point other-point)
+(define (basis-factor-derivation point other-point)
 	(/ (- (cadr other-point) (cadr point)) (car other-point) (car point))
 	)
 
-;(define (product-rule f1 df1 f2 df2)
-;	(sum-list-of-functions (list
-;		(multiply-list-of-functions f1 df2)
-;		(multiply-list-of-functions f2 df1)
-;		)))
+(define (product-rule functions derivatives)
+	(sum-list-of-functions
+		(multiply-function-with-number (car derivaitves) (multiply-list-of-functions (cdr functions)))
+		(multiply-function-with-number (product-rule (cdr functions)) (car functions))
+		))
+		
+(product-rule (list (lambda (x) x) (lambda (x) (+ x x))) (list 1 2))
