@@ -1,3 +1,5 @@
+;; untested, possible bug in (list->csv lst)
+
 (define (string-join lst delim)
 	(if (null? lst)
 		""                                 	

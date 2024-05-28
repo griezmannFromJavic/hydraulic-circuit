@@ -6,11 +6,11 @@
 		))
 
 (define (filter pred lst)
- 	(cond
-    ((null? lst) '())                          ;; If the list is empty, return an empty list
-	((pred (car lst))                          ;; If the predicate is true for the first element
-	 (cons (car lst) (filter pred (cdr lst)))) ;; Include it in the result
-	(else (filter pred (cdr lst)))))           ;; Otherwise, skip it and process the rest
+	(cond
+		((null? lst) '())                         ;; If the list is empty, return an empty list
+		((pred (car lst)) (cons (car lst) (filter pred (cdr lst)))) ;; If the predicate is true for the first element include it in the result ;; 
+		(else (filter pred (cdr lst)))            ;; Otherwise, skip it and process the rest
+		))
 
 
 (define (remove-duplicates lst)
