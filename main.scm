@@ -13,4 +13,4 @@
 (define points '((1 10) (2 2) (3 3) (4 7) (6 5) (10 1)))
 ;(define xs (linspace 1 10 101))
 (define xs (list 0 1 2 3 4 5 6 7 8 9 10))
-(map (lagrange-interpolation points) xs)
+(map (lagrange-polynomial points) xs)

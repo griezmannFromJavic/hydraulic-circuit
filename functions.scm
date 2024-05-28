@@ -5,6 +5,11 @@
 		(else (cons (car lst) (remove-member elem (cdr lst)))) ;; Otherwise, include the first element and continue
 		))
 
+(define (remove-nth-element lst n)
+  (if (= n 0) 
+      (cdr lst)
+      (append (list (car lst)) (remove-nth-element (cdr lst) (- n 1)))))
+
 (define (filter pred lst)
 	(cond
 		((null? lst) '())                         ;; If the list is empty, return an empty list
