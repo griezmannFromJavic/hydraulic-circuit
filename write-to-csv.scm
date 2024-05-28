@@ -8,9 +8,9 @@
 
 (define (list->csv lst)
 	"Function to convert a list to a CSV-formatted string"
- 	(define rows (map (lambda (row) (map format-csv-field row)) lst))
+ 	(let ((rows (map (lambda (row) (map format-csv-field row)) lst)))
     (string-join (map (lambda (row) (string-join row ",")) rows); Join each row with a comma
-	"\n"))
+	"\n")))
 
 
 (define (format-csv-field field)

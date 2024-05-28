@@ -1,9 +1,10 @@
 (define (basis-factor point other-point) ; returns function of x
+	(display point) (display other-point) (newline)
 	(lambda (x) (/ (- x (car other-point)) (- (car point) (car other-point))))
 	)
 	
 (define (list-of-factors point points) ; returns list of functions of x
-	(map (lambda (p) (basis-factor point p)) (remove (lambda (p) (equal? point p)) points))
+	(map (lambda (p) (basis-factor point p)) (remove-member point points))
 	)
 
 (define (basis-polynomial point points) ; returns function of x
@@ -27,10 +28,10 @@
 	(/ (- (cadr other-point) (cadr point)) (car other-point) (car point))
 	)
 
-(define (product-rule functions derivatives)
-	(sum-list-of-functions
-		(multiply-function-with-number (car derivaitves) (multiply-list-of-functions (cdr functions)))
-		(multiply-function-with-number (product-rule (cdr functions)) (car functions))
-		))
-		
-(product-rule (list (lambda (x) x) (lambda (x) (+ x x))) (list 1 2))
+;(define (product-rule functions derivatives)
+;"Implementing the product rule for multiple functions:
+;(f1 * f2 * ... * fn)' = f1' * f2 * ... * fn + f1 * f2' * ... * fn + ... + f1 * f2 * ... * fn'"
+
+
+;(product-rule (list 1 2) (list 3 4))
+;(product-rule (list (lambda (x) x) (lambda (x) (+ x x))) (list 1 2))

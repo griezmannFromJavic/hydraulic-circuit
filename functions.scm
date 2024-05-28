@@ -1,3 +1,18 @@
+(define (remove-member elem lst)
+	(cond
+		((null? lst) '()) ;; If the list is empty, return an empty list
+		((equal? elem (car lst)) (remove-member elem (cdr lst))) ;; If the first element is the one to remove, skip it
+		(else (cons (car lst) (remove-member elem (cdr lst)))) ;; Otherwise, include the first element and continue
+		))
+
+(define (filter pred lst)
+ 	(cond
+    ((null? lst) '())                          ;; If the list is empty, return an empty list
+	((pred (car lst))                          ;; If the predicate is true for the first element
+	 (cons (car lst) (filter pred (cdr lst)))) ;; Include it in the result
+	(else (filter pred (cdr lst)))))           ;; Otherwise, skip it and process the rest
+
+
 (define (remove-duplicates lst)
   (cond ((null? lst) '())
         ((null? (cdr lst)) lst)
