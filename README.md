@@ -2,7 +2,7 @@
 
 This program is mostly based on the work by [M. A. Hall](https://onlinelibrary.wiley.com/doi/abs/10.1002/net.3230060204).
 
-The program takes as input a list containing two pieces of information about inlet nodes: their inflow and outflow nodes, and the pressure-flow characteristic points. The output is the stationary state of a given system[^1].
+The program takes as input a list containing two pieces of information about inlet nodes: their inflow and outflow nodes, and the pressure-flow characteristic points. The output is the stationary pressure-flow state of a given system[^1].
 
 The program then calculates the (n-1)-degree polynomial for a given set of n points[^2] using Lagrange interpolation. The polynomial function and its integral, both necessary for the algorithm to work, are calculated analytically, ensuring speed and precision for further programs based on this one.
 
