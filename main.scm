@@ -7,13 +7,16 @@
 (load "dfs.scm")
 
 (define working-points (map cadr system))
-(define pressure-characteristics (map lagrange-polynomial working-points)) ; ??
+(define pressure-characteristics (map lagrange-polynomial working-points))
 
+(define flows (linspace 0 2 101))
+(define pressures0 (map (car pressure-characteristics) flows))
+(define pressures1 (map (cadr pressure-characteristics) flows))
+(define pressures2 (map (caddr pressure-characteristics) flows))
 
-(define points '((1 10) (2 2) (3 3) (4 7) (6 5) (10 1)))
-(define xs (linspace 1 10 101))
-;(define xs (list 0 1 2 3 4 5 6 7 8 9 10))
-(define ys (map (lagrange-polynomial points) xs))
+(define pressures (map (lambda (f) (map f flows)) pressure-characteristics))
 
-(write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))
-
+(write-csv-file "lagrange-data.csv"
+	(map (lambda (lst) (map exact->inexact lst))
+		(cons flows pressures)
+		))
