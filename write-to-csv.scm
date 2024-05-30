@@ -1,5 +1,3 @@
-;; untested, possible bug in (list->csv lst)
-
 (define (string-join lst delim)
 	(if (null? lst)
 		""                                 	
@@ -29,8 +27,8 @@
 		(display (list->csv lst) port))))
 
 ;; Example usage:
-;; (define data '(("Name" "Age" "Country")
-;;               ("Charlie" 28 "UK")))
-
-;;(write-csv-file "output.csv" data)
+;(define points '((1 10) (2 2) (3 3) (4 7) (6 5) (10 1)))
+;(define xs (linspace 1 10 101))
+;(define ys (map (lagrange-polynomial points) xs))
+;(write-csv-file "lagrange-data.csv" (list (map exact->inexact xs) (map exact->inexact ys)))
 

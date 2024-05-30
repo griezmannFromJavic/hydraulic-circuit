@@ -1,2 +1,2 @@
-gsi --load main.scm &
+gsi main.scm &
 python3 plot.py

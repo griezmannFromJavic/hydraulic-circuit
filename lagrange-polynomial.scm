@@ -1,5 +1,4 @@
 (define (basis-factor point other-point) ; returns function of x
-	(display point) (display other-point) (newline)
 	(lambda (x) (/ (- x (car other-point)) (- (car point) (car other-point))))
 	)
 	
