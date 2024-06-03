@@ -79,6 +79,10 @@
 (define (multiply-list-of-functions functions)
 	(apply-f-to-the-list-of-functions * functions)
 	)
+
+(define (divide-two-functions dividend divisor)
+	(lambda (x) (/ (dividend x) (divisor x)))
+	)
 	
 (define (multiply-function-with-number number function)
 	(lambda (x) (* number ((lambda (func) (func x)) function)))

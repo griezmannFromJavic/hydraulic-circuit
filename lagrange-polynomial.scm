@@ -36,13 +36,38 @@
 ; Step 1: create a derivative of a basis factor (done)
 ; Step 2: create a derivative of a basis polynomial using product rule
 ; 			(f1 * f2 * ... * fn)' = f1' * f2 * ... * fn + f1 * f2' * ... * fn + ... + f1 * f2 * ... * fn'"
-; Step 3: create a derivative of the whole Lagrange polynomial
+; Step 3: create a derivative of the whole Lagrange polynomial by multiplying the unity basis polynomial derivative with a constant (yn) and summing all basis polynomial derivatives.
 
 
+; inefficient and ugly
+#|
 (define (basis-polynomial-derivative-nth-summand point points n)
 	(multiply-function-with-number
-		(list-ref (list-of-derivatives point points) n)
+		(list-ref (list-of-derivatives point points) n) ; it would be more efficient to calculate only the required derivative
 		(multiply-list-of-functions (remove-nth-element (list-of-factors point points) n))
 		))
 
+(define (basis-polynomial-derivative points)
+	(sum-list-of-functions basis-polynomial-derivative-nth-summand)
+|#
 
+(define (unity-basis-polynomial-derivative factors derivatives)
+"implements product rule by multiplying each consecutive list member by
+multiplying previous one with fn' and dividing by fn"
+	(let (
+		((div-and-multiply dividend-fun number divisor-fun)
+		(divide-two-functions
+			(multiply-function-with-number number dividend-fun)
+			divisor-fun))
+		((helper previous lst1 lst2 fun)
+		(if (or (null? lst1) (null? lst2))
+			'()
+			(let ((current (fun previous (car lst1) (car lst2))))
+				(cons current
+					(helper current (cdr lst1) (cdr lst2) fun)
+					))))
+		(first (multiply-function-with-number (car lst1) (cdr lst2)))
+			)
+		(cons first
+			(helper first (cdr lst1) (cdr lst2) div-and-multiply)
+			)))
