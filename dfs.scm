@@ -1,5 +1,7 @@
+; (define) not on top level. must be corrected!!
+
 (define (dfs-init adj-list initial-node)
-  (define (neighbours node) (cadr (assoc node adj-list)))
+	(define (neighbours node) (cadr (assoc node adj-list)))
 
   (define (dfs node visited tree)
     (let ((new-visited (cons node visited)))

@@ -1,8 +1,8 @@
 (define (remove-member elem lst)
 	(cond
-		((null? lst) '()) ;; If the list is empty, return an empty list
-		((equal? elem (car lst)) (remove-member elem (cdr lst))) ;; If the first element is the one to remove, skip it
-		(else (cons (car lst) (remove-member elem (cdr lst)))) ;; Otherwise, include the first element and continue
+		((null? lst) '()) 
+		((equal? elem (car lst)) (remove-member elem (cdr lst))) 
+		(else (cons (car lst) (remove-member elem (cdr lst))))
 		))
 
 (define (remove-nth-element lst n)
@@ -12,15 +12,15 @@
 
 (define (filter pred lst)
 	(cond
-		((null? lst) '())                         ;; If the list is empty, return an empty list
-		((pred (car lst)) (cons (car lst) (filter pred (cdr lst)))) ;; If the predicate is true for the first element include it in the result ;; 
-		(else (filter pred (cdr lst)))            ;; Otherwise, skip it and process the rest
+		((null? lst) '())
+		((pred (car lst)) (cons (car lst) (filter pred (cdr lst))))
+		(else (filter pred (cdr lst)))
 		))
 
 
 (define (remove-duplicates lst)
-  (cond ((null? lst) '())
-        ((null? (cdr lst)) lst)
+	(cond ((null? lst) '())
+    	((null? (cdr lst)) lst)
         (else (cons (car lst)
                     (remove-duplicates
                     	(filter (lambda (x) (not (= (car lst) x))) (cdr lst))
@@ -40,33 +40,33 @@
 		))
      
 (define (subset? s1 s2)
-	"Is s1 subset of s2?"
+"Is s1 subset of s2?"
 	(and (list? s1)
 		 (list? s2)
-		 (null? (remove-duplicates (set-difference s1 s2)))))
+		 (null? (set-difference s1 s2))
+		 ))
 
-(define (incidence-matrix system)
-	"Creates incidence matrix from system description."
-	(list-tabulate num-nodes
-		(lambda (i)
-			(list-tabulate num-links
-				(lambda (j)
-					(cond ((equal? i (list-ref outlet-nodes j)) -1)
-						  ((equal? i (list-ref inlet-nodes j)) 1)
-						  (#t 0)
-						  ))))))
+;i made mess here
+(define incidence-matrix
+	(lambda (i j)
+		(cond ((= i (list-ref outlet-nodes j)) -1)
+			  ((= i (list-ref inlet-nodes j)) 1)
+			  (#t 0)
+			  )))
+		  
 
 (define (display-matrix matrix)
-  "Display the elements of a matrix."
-  (let ((num-rows (length matrix))
-        (num-cols (if (not (null? matrix)) (length (car matrix)) 0)))
+"Display the elements of a matrix."
+	(let ((num-rows (length matrix))
+		(num-cols (if (not (null? matrix)) (length (car matrix)) 0)))
     (do ((i 0 (+ i 1)))
-        ((= i num-rows))
-      (do ((j 0 (+ j 1)))
-          ((= j num-cols))
-        (display (list-ref (list-ref matrix i) j))
-        (display " "))
-      (newline))))
+    	((= i num-rows))
+		(do ((j 0 (+ j 1)))
+			((= j num-cols))
+			(display (list-ref (list-ref matrix i) j))
+			(display " "))
+      	(newline)
+      	)))
 
 (define (apply-f-to-the-list-of-functions f functions)
 	(lambda (x) (apply f (map (lambda (func) (func x)) functions)))
@@ -88,6 +88,7 @@
 	(lambda (x) (* number ((lambda (func) (func x)) function)))
 	)
 
+; define not on top level, let must be used
 (define (linspace start end num-points)
 	(define (first-n-natural-numbers n)
 		(define (helper count result)
@@ -99,3 +100,10 @@
 	(define scaled-linspace (map (lambda (x) (* x (- end start))) linspace-from-0-to-1))
 	(map (lambda (x) (+ start x)) scaled-linspace)
 	)
+
+
+(define (matrix-multiplication a b)
+"Returns AxB if where A is described as (a i j).
+No is-matrix? procedure is performed."
+	(list a b))
+	

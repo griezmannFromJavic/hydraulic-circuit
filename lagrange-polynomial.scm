@@ -51,6 +51,7 @@
 	(sum-list-of-functions basis-polynomial-derivative-nth-summand)
 |#
 
+#|
 (define (unity-basis-polynomial-derivative factors derivatives)
 "implements product rule by multiplying each consecutive list member by
 multiplying previous one with fn' and dividing by fn"
@@ -71,3 +72,4 @@ multiplying previous one with fn' and dividing by fn"
 		(cons first
 			(helper first (cdr lst1) (cdr lst2) div-and-multiply)
 			)))
+|#
