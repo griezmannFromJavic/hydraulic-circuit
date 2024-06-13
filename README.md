@@ -57,8 +57,3 @@ The example of overdetermination of the polynomial would be describing a line wi
 
 
 
-
-The great inspiration for this analysis were
-professor Severino Krizmanić who introduced me to the world of numerical computing;
-professor Dražen Lončar who presented a great introduction to dynamical systems;
-and mister Andrew Plotkin for introducing me to Scheme, most elegant among programming languages.

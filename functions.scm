@@ -46,27 +46,15 @@
 		 (null? (set-difference s1 s2))
 		 ))
 
-;i made mess here
+;; i made a mess here
+;; this function is not allowing for the arbitrary naming of nodes
 (define incidence-matrix
 	(lambda (i j)
 		(cond ((= i (list-ref outlet-nodes j)) -1)
 			  ((= i (list-ref inlet-nodes j)) 1)
 			  (#t 0)
 			  )))
-		  
 
-(define (display-matrix matrix)
-"Display the elements of a matrix."
-	(let ((num-rows (length matrix))
-		(num-cols (if (not (null? matrix)) (length (car matrix)) 0)))
-    (do ((i 0 (+ i 1)))
-    	((= i num-rows))
-		(do ((j 0 (+ j 1)))
-			((= j num-cols))
-			(display (list-ref (list-ref matrix i) j))
-			(display " "))
-      	(newline)
-      	)))
 
 (define (apply-f-to-the-list-of-functions f functions)
 	(lambda (x) (apply f (map (lambda (func) (func x)) functions)))
@@ -88,18 +76,20 @@
 	(lambda (x) (* number ((lambda (func) (func x)) function)))
 	)
 
-; define not on top level, let must be used
+
 (define (linspace start end num-points)
-	(define (first-n-natural-numbers n)
-		(define (helper count result)
-			(if (= count n)
-				(reverse result)
-				(helper (+ count 1) (cons count result))))
-			(helper 0 '()))
-	(define linspace-from-0-to-1 (map (lambda (x) (/ x (- num-points 1))) (first-n-natural-numbers num-points)))
-	(define scaled-linspace (map (lambda (x) (* x (- end start))) linspace-from-0-to-1))
-	(map (lambda (x) (+ start x)) scaled-linspace)
-	)
+	(let* (
+		(first-n-natural-numbers (lambda (n)
+			(let loop ((count 0) (result '()))
+				(if (= count n)
+					(reverse result)
+					(loop (+ count 1) (cons count result))))))
+		(linspace-from-0-to-1
+			(map (lambda (x) (/ x (- num-points 1))) (first-n-natural-numbers num-points)))
+		(scaled-linspace
+			(map (lambda (x) (* x (- end start))) linspace-from-0-to-1)))
+		(map (lambda (x) (+ start x)) scaled-linspace)))
+
 
 
 (define (matrix-multiplication a b)
