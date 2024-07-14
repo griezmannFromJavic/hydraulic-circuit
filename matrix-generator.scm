@@ -1,3 +1,4 @@
+; defining INCIDENCE MATRIX
 (define (incidence-matrix graph)
 	(lambda (node link)
 	(let (
@@ -27,3 +28,7 @@
 ;; example usage
 ;; (define example-tree (dfs-init system 0))
 ;; ((fundamental-circuit-matrix system example-tree) 1 0)
+
+; defining FUNDAMENTAL CIRCUIT MATRIX
+
+
