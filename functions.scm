@@ -26,7 +26,7 @@
                     	(filter (lambda (x) (not (= (car lst) x))) (cdr lst))
                     	)))))
 
-(define (get-corresponding-element element list1 list2)
+(define (get-corresponding-element element list1 list2)error: Your local changes to the following files would be overwritten by merge:
 "takes an element from the first list, along with two lists, and returns the element from the second list located at the same index as the given element in the first list."
 	(if (or (null? list1) (null? list2)) '()
 		(if (equal? element (car list1)) (car list2)
@@ -95,5 +95,5 @@
 (define (matrix-multiplication a b)
 "Returns AxB if where A is described as (a i j).
 No is-matrix? procedure is performed."
-	(list a b))
+	(list))
 	

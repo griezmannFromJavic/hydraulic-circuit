@@ -75,15 +75,21 @@
                                       )
                                   (if (equal? node finish)
                                       visited
+                                      (begin
+                                      ;(pretty-print visited)
                                       (map
                                        (lambda (x) (dfs x (cons node visited)))
                                        (unvisited-neighbours node))
+                                       )
                                       ))))
                              )
                       (dfs start '())
                       )))
 
 (define *tree-loops* (map (lambda (chord) (tree-loop chord *tree*)) *chords*))
+
+;(pretty-print *chords*) (newline) (pretty-print *tree-loops*) (newline)
+(pretty-print '(0 4)) (newline) (pretty-print (tree-loop '(0 4) *tree*)) (newline)
 
 
 (define (incidence-matrix graph)
