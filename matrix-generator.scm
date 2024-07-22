@@ -49,7 +49,7 @@
 |#
                   
 
-(define tree0 (dfs-tree adjacency-list-undirected 0))
+(define *tree* (dfs-tree adjacency-list-undirected 0))
 ;(display links) (newline) (display tree0) (newline)
 
 
@@ -59,7 +59,7 @@
    tree)
   )
 
-(define chords0 (chords tree0))
+(define *chords* (chords *tree*))
 
 
 (define tree-loop (lambda (chord tree)
@@ -84,7 +84,7 @@
                       (dfs start '())
                       )))
 
-(display (tree-loop (car chords0) tree0))
+(define *tree-loops* (map (lambda (chord) (tree-loop chord *tree*)) *chords*))
 
 
 ; defining INCIDENCE MATRIX
