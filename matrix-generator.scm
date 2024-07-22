@@ -2,7 +2,6 @@
 
 (define (tree-neighbours node tree)
   "Tree neighbours, subset of neighbours."
-  (display tree) (newline)
   (cond
    ((null? tree) '())
    ((equal? (car (car tree)) node)
@@ -18,7 +17,6 @@
   "Creates a spanning tree in a graph using DFS. Tree is subset of links"
   (letrec (
            (dfs (lambda (node visited tree)
-                  ;(display tree) (newline)
                   (fold-right
                    (lambda (neighbor result)
                      (let (
@@ -68,22 +66,23 @@
                     (letrec (
                              (start (cadr chord))
                              (finish (car chord))
-                             (unvisited-neighbours
-                              (lambda (node)
-                                (set-difference (tree-neighbours node tree) (visited))
-                                ))
                              (dfs
                               (lambda (node visited)
-                                (if (equal? node finish)
-                                    visited
-                                    (map
-                                     (lambda (x) (dfs x (cons node visited)))
+                                (let (
+                                      (unvisited-neighbours
+                                       (lambda (node)
+                                         (set-difference (tree-neighbours node tree) visited)
+                                         ))
+                                      )
+                                  (if (equal? node finish)
+                                      visited
+                                      (map
+                                       (lambda (x) (dfs x (cons node visited)))
                                        (unvisited-neighbours node))
-                                       )))
-                                )
-                      (display finish) (newline)
-                              (dfs start '())
-                              )))
+                                      ))))
+                             )
+                      (dfs start '())
+                      )))
 
 (display (tree-loop (car chords0) tree0))
 
