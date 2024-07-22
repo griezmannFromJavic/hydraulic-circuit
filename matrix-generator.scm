@@ -1,6 +1,7 @@
 (define (neighbours node adj-list) (cadr (assoc node adj-list)))
 
 (define (tree-neighbours node tree)
+  "Tree neighbours, subset of neighbours."
   (cond
    ((null? tree) '())
    ((equal? (car (car tree)) node)
@@ -16,7 +17,7 @@
   "Creates a spanning tree in a graph using DFS. Tree is subset of links"
   (letrec (
            (dfs (lambda (node visited tree)
-
+                  (display tree) (newline)
                   (fold-right
                    (lambda (neighbor result)
                      (let (
@@ -27,47 +28,60 @@
                            result
                            (dfs neighbor result-visited (cons (list node neighbor) result-tree)))))
                    (cons tree (cons node visited))
-                   (neighbours node adj-list))
-                  ))
-           )
+                   (neighbours node adj-list)
+                   ))))
     ;(reverse (car (dfs initial-node '() '()))) ; THIS WORKS
     (dfs initial-node '() '()) ; ONLY FOR TESTING
     ))
 
+#|
+(define (NEW-dfs-tree adj-list initial-node)
+  (letrec (
+           (dfs (lambda (node visited tree)
+                  (let (
+                        (unvisited-neighbours (set-difference (neighbours node adj-list) (visited)))
+                        )
+                  (if (null? unvisited-neighbours)
+                      tree
+                      (fold-right (lambda ()
+                  )))
+
+                (dfs initial-node '() '())
+|#
+                  
+
 (define tree0 (dfs-tree adjacency-list-undirected 0))
 (display links) (newline) (display tree0) (newline)
 
-#|
-(define (chords tree) ;global variable "links" inside function!!!
-(set-difference
-(set-difference links (map reverse tree))
-tree)
-)
+
+(define (chords tree) ;global variable "links" inside function!!! Rename links to *links*, do the same wit all global variables. Mainly with ones from system.scm.
+  (set-difference
+   (set-difference links (map reverse tree))
+   tree)
+  )
 
 (define chords0 (chords tree0))
 
 
 (define tree-loop (lambda (chord tree)
-(letrec (
-(start (car chord))
-(finish (cadr chord))
-(visited (lambda () (cons node visited)))
-(unvisited-neighbour
-(lambda ()
-(car (set-difference (tree-neighbours tree node) visited))
-))
-(dfs
-(lambda (node neighbour visited tree)
-(if (equal? (cdr loop-link) finish)
-visited
-(dfs (neighbour (unvisited-neighbour neighbour) (cons neighbour visited) tree))
-)))
-)
-(dfs start tree)
-)))
+                    (letrec (
+                             (start (cadr chord))
+                             (finish (car chord))
+                             (unvisited-neighbours (set-difference (tree-neighbours node tree) (visited)))
+                             (dfs
+                              (lambda (node visited)
+                                (if (equal? (cdr loop-link) finish)
+                                    visited
+                                    (map
+                                     (lambda (x) (dfs x (cons node visited)))
+                                       unvisited-neighbours)
+                                       )))
+                                )
+                              (dfs start '())
+                              )))
 
 (display (tree-loop (car chords0) tree0))
-|#
+
 
 ; defining INCIDENCE MATRIX
 (define (incidence-matrix graph)
