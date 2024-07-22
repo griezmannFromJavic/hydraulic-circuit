@@ -26,11 +26,7 @@
 								)
 							(if (member neighbor result-visited)
 								result
-								(let (
-									(dfs-result (dfs neighbor result-visited (cons (list node neighbor) result-tree)))
-									)
-									(cons (car dfs-result) (cdr dfs-result))
-									))))
+								(dfs neighbor result-visited (cons (list node neighbor) result-tree)))))
 					(cons tree new-visited)
 					(neighbours node adj-list))
 					)))
@@ -106,5 +102,3 @@
 ;; ((fundamental-circuit-matrix system example-tree) 1 0)
 
 ; defining FUNDAMENTAL CIRCUIT MATRIX
-
-
