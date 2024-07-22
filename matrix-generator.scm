@@ -2,15 +2,16 @@
 
 (define (tree-neighbours node tree)
   "Tree neighbours, subset of neighbours."
+  (display tree) (newline)
   (cond
    ((null? tree) '())
    ((equal? (car (car tree)) node)
-    (cons (cadr (car tree)) (tree-neighbours (cdr tree) node))
+    (cons (cadr (car tree)) (tree-neighbours node (cdr tree)))
     )
    ((equal? (cadr (car tree)) node)
-    (cons (car (car tree)) (tree-neighbours (cdr tree) node))
+    (cons (car (car tree)) (tree-neighbours node (cdr tree)))
     )
-   (else (tree-neighbours (cdr tree) node))
+   (else (tree-neighbours node (cdr tree)))
    ))
 
 (define (dfs-tree adj-list initial-node)
@@ -51,7 +52,7 @@
                   
 
 (define tree0 (dfs-tree adjacency-list-undirected 0))
-(display links) (newline) (display tree0) (newline)
+;(display links) (newline) (display tree0) (newline)
 
 
 (define (chords tree) ;global variable "links" inside function!!! Rename links to *links*, do the same wit all global variables. Mainly with ones from system.scm.
@@ -77,9 +78,10 @@
                                     visited
                                     (map
                                      (lambda (x) (dfs x (cons node visited)))
-                                       unvisited-neighbours)
+                                       (unvisited-neighbours node))
                                        )))
                                 )
+                      (display finish) (newline)
                               (dfs start '())
                               )))
 
@@ -102,6 +104,7 @@
 ;; example usage
 ;; ((incidence-matrix system) 1 0)
 
+#|
 (define (fundamental-circuit-matrix graph tree)
   (lambda (node link)
     (letrec (
@@ -112,6 +115,7 @@
             ((member (list neighbour owner) tree) -1)
             (else 0)
             ))))
+|#
 
 ;; example usage
 ;; (define example-tree (dfs-init system 0))
