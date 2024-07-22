@@ -17,7 +17,7 @@
   "Creates a spanning tree in a graph using DFS. Tree is subset of links"
   (letrec (
            (dfs (lambda (node visited tree)
-                  (display tree) (newline)
+                  ;(display tree) (newline)
                   (fold-right
                    (lambda (neighbor result)
                      (let (
@@ -30,8 +30,8 @@
                    (cons tree (cons node visited))
                    (neighbours node adj-list)
                    ))))
-    ;(reverse (car (dfs initial-node '() '()))) ; THIS WORKS
-    (dfs initial-node '() '()) ; ONLY FOR TESTING
+    (reverse (car (dfs initial-node '() '()))) ; THIS WORKS
+    ;(dfs initial-node '() '()) ; ONLY FOR TESTING
     ))
 
 #|
@@ -67,10 +67,13 @@
                     (letrec (
                              (start (cadr chord))
                              (finish (car chord))
-                             (unvisited-neighbours (set-difference (tree-neighbours node tree) (visited)))
+                             (unvisited-neighbours
+                              (lambda (node)
+                                (set-difference (tree-neighbours node tree) (visited))
+                                ))
                              (dfs
                               (lambda (node visited)
-                                (if (equal? (cdr loop-link) finish)
+                                (if (equal? node finish)
                                     visited
                                     (map
                                      (lambda (x) (dfs x (cons node visited)))
