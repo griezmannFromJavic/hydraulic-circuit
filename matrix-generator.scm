@@ -49,13 +49,12 @@
 |#
                   
 
-(define *tree* (dfs-tree adjacency-list-undirected 0))
-;(display links) (newline) (display tree0) (newline)
+(define *tree* (dfs-tree *adjacency-list-undirected* 0))
 
 
-(define (chords tree) ;global variable "links" inside function!!! Rename links to *links*, do the same wit all global variables. Mainly with ones from system.scm.
+(define (chords tree)
   (set-difference
-   (set-difference links (map reverse tree))
+   (set-difference *links* (map reverse tree))
    tree)
   )
 
@@ -87,7 +86,6 @@
 (define *tree-loops* (map (lambda (chord) (tree-loop chord *tree*)) *chords*))
 
 
-; defining INCIDENCE MATRIX
 (define (incidence-matrix graph)
   (lambda (node link)
     (let (
