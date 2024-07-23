@@ -1,18 +1,18 @@
 ; contains information about network: the nodes of a given link and the points of a pressure characteristics
 ; ((outlet-node inlet-node) ((x1 y1) (x2 y2) ... (xn yn))
 
-(define *system* '(
-	((0 4) ((0 4.1) (1 3) (2 0))) 
-	((5 0) ((0 0) (1 1) (2 4)))
-	((0 1) ((0 0) (1 1.5) (2 4)))
-	((0 2) ((0 10) (1 0) (2 10)))
-	((1 4) ((0 10) (1 8) (2 0)))
-	((4 5) ((0 0) (2/3 10) (4/3 1) (2 9)))
-	((2 5) ((0 0) (1 1) (2 4) (0.5 7) (1.5 0)))
-	((1 3) ((0 0) (1 1.7) (2 4)))
-	((2 3) ((0 0) (2 8)))
-	((3 4) ((0 0) (1 2) (3 9.2)))
-	((3 5) ((0 0) (1 1) (2 4))) 
+(define *system* '( ; this approach is currently being disregarded
+	((0 4)) 
+	((5 0))
+	((0 1))
+	((0 2))
+	((1 4))
+	((4 5))
+	((2 5))
+	((1 3))
+	((2 3))
+	((3 4))
+	((3 5))
 	))
 
 (define *links* (map car *system*))

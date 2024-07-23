@@ -31,26 +31,9 @@
                    ))))
     (reverse (car (dfs initial-node '() '()))) ; THIS WORKS
     ;(dfs initial-node '() '()) ; ONLY FOR TESTING
-    ))
-
-#|
-(define (NEW-dfs-tree adj-list initial-node)
-  (letrec (
-           (dfs (lambda (node visited tree)
-                  (let (
-                        (unvisited-neighbours (set-difference (neighbours node adj-list) (visited)))
-                        )
-                  (if (null? unvisited-neighbours)
-                      tree
-                      (fold-right (lambda ()
-                  )))
-
-                (dfs initial-node '() '())
-|#
-                  
+    ))            
 
 (define *tree* (dfs-tree *adjacency-list-undirected* 0))
-
 
 (define (chords tree)
   (set-difference
@@ -59,32 +42,6 @@
   )
 
 (define *chords* (chords *tree*))
-
-#|
-;deep-nested return
-(define tree-loop-OLD (lambda (chord tree)
-                    (letrec (
-                             (start (cadr chord))
-                             (finish (car chord))
-                             (dfs
-                              (lambda (node visited)
-                                (let (
-                                      (unvisited-neighbours
-                                       (lambda (node)
-                                         (set-difference (tree-neighbours node tree) visited)
-                                         ))
-                                      )
-                                  (if (equal? node finish)
-                                      visited
-                                      (map
-                                       (lambda (x) (dfs x (cons node visited)))
-                                       (unvisited-neighbours node))
-                                       )
-                                      )))
-                             )
-                      (dfs start '())
-                      )))
-|#
 
 (define tree-loop (lambda (chord tree)
 	(letrec (
@@ -141,21 +98,3 @@
 ;; example usage
 ;; ((incidence-matrix system) 1 0)
 
-#|
-(define (fundamental-circuit-matrix graph tree)
-  (lambda (node link)
-    (letrec (
-             ; loops
-             ; loop-currents
-             )
-      (cond ((member (list owner neighbour) tree) 1)
-            ((member (list neighbour owner) tree) -1)
-            (else 0)
-            ))))
-|#
-
-;; example usage
-;; (define example-tree (dfs-init system 0))
-;; ((fundamental-circuit-matrix system example-tree) 1 0)
-
-; defining FUNDAMENTAL CIRCUIT MATRIX

@@ -7,11 +7,11 @@ If one tries to download the paper for free from the pirated site and fails, he 
 as I already made my views on the illegal distribution clear!
 
 When searching for the algorithm on the subject the menitoned algorithm stands out as mathematically most elegant.
-Unfortunatley, authors gave themselves the freedom of doing most of the job analitically (thus the elegance), so the praticallity of writing the peace of software that can solve serious problems is missing out. In their example they are using the pressure-drop function $f$ with regard to flow $x$ $f(x)=r*x^2$ so the definite integral is simple to calculate analitically $g(x)=r*x^3/3$ for $x\geq 0$ and $g(x)=r*x^3/3$. Since I wanted to avoid making the user integrading his own pressure-drop definite integrals.
-\begin{align}
-a&=1\\
-b&=2
-\end{align}
+Unfortunatley, authors gave themselves the freedom of doing most of the job analitically (thus the elegance), so the praticallity of writing the peace of software that can solve serious problems is missing out. In their example they are using the pressure-drop function $f$ with regard to flow $x$ $f(x)=r*x^2$ so the definite integral is simple to calculate analitically $g(x)=r* x^3 /3$ for $x\geq 0$ and $g(x)=r* x^3 /3$ for $x \less 0$. Since I wanted to avoid making the user integrading his own pressure-drop definite integrals I wanted the user to input just the points of the pressure charachteristics and make lagrange polynomial do the rest, symbolic polynomial integration is still quite the challange for my poor coding skills.
+Thus, I decided to discart the M. A. Hall's algorithm alltogether and program something more familliar: segregated iterative solver.
+
+The two spaces to be solved are the node pressure vector (scalar vector length X where X is the number of the nodes), and loop flow space, (the scalar vector length Y where Y is the number of independent loops), the loop flows can be transformed to link flows using fundamental circuit matrix transformation.
+
 
 <!---
 The authors do not provide us with the code they are mentioning in the paper, but from the context of the paper it can be deducted that their code is not very flexible, it would seem that every new system must be described by hand (much such codes can be found on github, written by good mathematicians with poor programming skills, Matlab seems to be their programming language of choice).
