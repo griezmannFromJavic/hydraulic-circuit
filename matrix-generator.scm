@@ -60,8 +60,9 @@
 
 (define *chords* (chords *tree*))
 
-
-(define tree-loop (lambda (chord tree)
+#|
+;deep-nested return
+(define tree-loop-OLD (lambda (chord tree)
                     (letrec (
                              (start (cadr chord))
                              (finish (car chord))
@@ -75,21 +76,54 @@
                                       )
                                   (if (equal? node finish)
                                       visited
-                                      (begin
-                                      ;(pretty-print visited)
                                       (map
                                        (lambda (x) (dfs x (cons node visited)))
                                        (unvisited-neighbours node))
                                        )
-                                      ))))
+                                      )))
                              )
                       (dfs start '())
                       )))
+|#
+
+(define tree-loop (lambda (chord tree)
+	(letrec (
+		(start (cadr chord))
+		(finish (car chord))
+		(dfs (lambda (node visited)
+			(let (
+				(unvisited-neighbours
+					(lambda (node) (set-difference (tree-neighbours node tree) visited))
+                )
+              )
+			(if (equal? node finish)
+                  (cons node visited)
+                  (let loop (
+                  	(neighbors (unvisited-neighbours node))
+					(result '())
+						)
+                    (if (null? neighbors)
+                        result
+                        (let ((path (dfs (car neighbors) (cons node visited))))
+                          (if (not (null? path))
+                              path
+                              (loop (cdr neighbors) result)))))))))
+      			)
+      (letrec (
+      	(nodes->links (lambda (lst)
+      		(if (null? (cddr lst))
+		  		(list lst)
+		  		(cons (list (car lst) (cadr lst)) (nodes->links (cdr lst)))
+		  		))))
+      (nodes->links (reverse (dfs start '())))
+      )
+    )))
+
 
 (define *tree-loops* (map (lambda (chord) (tree-loop chord *tree*)) *chords*))
+(define *full-tree-loops* (map cons *chords* *tree-loops*))
 
-;(pretty-print *chords*) (newline) (pretty-print *tree-loops*) (newline)
-(pretty-print '(0 4)) (newline) (pretty-print (tree-loop '(0 4) *tree*)) (newline)
+(pretty-print *chords*) (newline) (pretty-print *tree-loops*) (newline) (pretty-print *full-tree-loops*)
 
 
 (define (incidence-matrix graph)
