@@ -1,11 +1,19 @@
 # Hydraulic Circuit Solver
 
-This program is mostly based on the work by [M. A. Hall](https://onlinelibrary.wiley.com/doi/abs/10.1002/net.3230060204).
+This program is inspired by the [M. A. Hall's](https://onlinelibrary.wiley.com/doi/abs/10.1002/net.3230060204) work.
 I personally believe you should pay the distributor for the authors work because the science funding is known for its meritocratic nature.
 You should not download the work from the pirate distributors like [Z-library](https://z-lib.io/) (where the paper can be found) or [Anna's Archive](https://annas-archive.org/) because knowledge should be payed for!
 If one tries to download the paper for free from the pirated site and fails, he or she will find no luck in contacting me at my personal [e-mail address](j.krtolacic@gmail.com),
-as I already made my views on the illegal distribution clear.
+as I already made my views on the illegal distribution clear!
 
+When searching for the algorithm on the subject the menitoned algorithm stands out as mathematically most elegant.
+Unfortunatley, authors gave themselves the freedom of doing most of the job analitically (thus the elegance), so the praticallity of writing the peace of software that can solve serious problems is missing out. In their example they are using the pressure-drop function $f$ with regard to flow $x$ $f(x)=r*x^2$ so the definite integral is simple to calculate analitically $g(x)=r*x^3/3$ for $x\geq 0$ and $g(x)=r*x^3/3$. Since I wanted to avoid making the user integrading his own pressure-drop definite integrals.
+\begin{align}
+a&=1\\
+b&=2
+\end{align}
+
+<!---
 The authors do not provide us with the code they are mentioning in the paper, but from the context of the paper it can be deducted that their code is not very flexible, it would seem that every new system must be described by hand (much such codes can be found on github, written by good mathematicians with poor programming skills, Matlab seems to be their programming language of choice).
 
 This code is made to be flexible and user friendly, user must provide only the necessary information about the system and the software will do the rest (like calculating the analytic definite integral of a polynomial).
@@ -30,8 +38,6 @@ The incidence matrix B and the fundamental circuit matrix G are both represented
 Scheme allows great flexibility in naming the nodes and links.
 Links need not be named at all, if the user wants, he can add comment next to the link he is describing (see example system).
 
-
-
 ## Comments on some part of the algorithm
 
 Author has written the paper in a very concise manner, with the assumption of the readers familiarity with the mathematical and physical underlings of the calculated phenomena.
@@ -45,7 +51,7 @@ The mass sources (and sinks, having negative sign) representing the systems boun
 The solver solves for stationary state, so no accumulation of mass in the system is allowed, this condition ensures zero sum inflow on the constant-pressure and constant-flow nodes, which, in turn, ensures no mass source of the fictitious link 0, connected to all constant-pressure and constant-flow nodes.
 That is the reasoning behind introducing the fictitious node 0, creating a network of sourceless nodes, poorly explained in the original work.
 The usage of incidence matrix B in the 
-
+-->
 
 
 
