@@ -1,6 +1,0 @@
-(load "functions.scm")
-(load "symbolic-math.scm")
-(load "solver-constants.scm")
-(load "system.scm")
-;(load "write-to-csv.scm")
-(load "transformations.scm")
