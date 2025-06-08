@@ -6,8 +6,6 @@
 # link name: inlet node -> outlet node
 # [x1, y1], [x2, y2] ...
 
-# order is important, CONSTANT PRESSURE stops the LINKS parser
-
 # the simplest way to ensure a passive element is adding the point [0.0, 0.0]
 
 LINKS
@@ -37,13 +35,17 @@ link10: 3 -> 4 # int type input should be read as float
 
 
 NODE CONDITIONS
-    P(1) = -5000.0 # node 1 with known pressure
-    P(2) = -8000.0
-    S(4) = 100.0 # known inflow at node 4
-    S(5) = -200.0 # known sink at node 5
+    P(1) = 50.0 # defined pressure in node 1 
+    P(2) = 0.0 # other nodes might have their pressure defined, but one node MUST (otherwise p + const. vector will also suffice)
+    S(3) = 1.1 # fixed source term for node 3
+    S(4) = -0.2
+    
 
 
-
-
+    
 # constant inflow can be modeled by adding a link whose flow function is constant for all dp
+# This might not be a good idea beacause the function derivative is zero.
+
 # same goes for flow source depending on pressure.
+        
+
