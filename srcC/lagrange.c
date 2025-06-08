@@ -3,6 +3,7 @@
 All functions and structures related to the Lagrange polynomial representation
 of flow(pressure drop) in a link.
 
+
 \*===========================================================================*/
 
 #include "lagrange.h"
