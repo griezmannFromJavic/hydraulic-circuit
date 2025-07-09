@@ -6,7 +6,7 @@
 
 typedef struct LagrangeData LagrangeData;
 struct LagrangeData fillLagrangeData(double** points, int pointsSize);
-double* extractXY(double** points, int pointsSize, bool extractingY);
+//double* extractXY(double** points, int pointsSize, bool extractingY);
 double* barycentricWeights(double* xs, int xsSize);
 double** compute_differentiation_matrix(struct LagrangeData d);
 typedef double (*PolynomialFunc)(struct LagrangeData*, double);

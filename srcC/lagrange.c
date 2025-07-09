@@ -32,7 +32,7 @@ double** compute_differentiation_matrix(struct LagrangeData d) {
     const double* x = d.xs;
     const double* w = d.weights;
     int n = d.pointsSize;
-    
+
     double** D = malloc(n * sizeof(double*));
     for (int i = 0; i < n; i++) {
         D[i] = calloc(n + 1, sizeof(double));
@@ -63,13 +63,13 @@ double lagrangePolynomial(struct LagrangeData d, double xEval) {
     double* y = d.ys;
     double* w = d.weights;
     int n = d.pointsSize;
-    
+
     double num = 0.0;
     double den = 0.0;
 
     for (int i = 0; i < n; i++) {
         if (fabs(xEval - x[i]) < EPSILON) {
-            return y[i]; 
+            return y[i];
         }
         double temp = w[i] / (xEval - x[i]);
         num += temp * y[i];
@@ -122,6 +122,6 @@ struct LagrangeData fillLagrangeData(double** points, int pointsSize) {
     d.ys = extractColumn(d.points, d.pointsSize, 1);
     d.weights = barycentricWeights(d.xs, d.pointsSize);
     d.differentiationMatrix = compute_differentiation_matrix(d);
-    
+
     return d;
 }

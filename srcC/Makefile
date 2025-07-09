@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -g
-OBJ = main.o helper.o parser.o lagrange.o graph.o
+OBJ = main.o helper.o parser.o lagrange.o graph.o solver.o
 TARGET = executable
 
 # Default rule

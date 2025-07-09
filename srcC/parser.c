@@ -2,19 +2,20 @@
 
 Input file parser. Written mostly using ChatGPT.
 
-I need to add Boundary conditions parser with fictitious "0" node.
+I need to add Boundary conditions parser, now needed in solver.c
 
 \*===========================================================================*/
 
 
 #include "parser.h"
-// #include "helper.h"
+#include "helper.h"
 
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 
 void removeExcess(char* line) {
+    //removes comments, leading and trailing spaces.
     char* comment = strchr(line, '#');
     if (comment) *comment = '\0';
 
@@ -106,14 +107,17 @@ Link parseLink(char* line, FILE* file) {
         removeExcess(node2str);
         l.inletNode = atoi(node1str);
         l.outletNode = atoi(node2str);
+        l.type = 'r'; //
     }
 
     l.lData = parsePoints(file);
     return l;
 }
 
-LinkArray realLinksParser() {
+LinkArray realGraphParser() {
     LinkArray x;
+    x.data = NULL;
+    x.size = 0;
 
     FILE *file = fopen("inputs", "r");
     if (file == NULL) {
@@ -153,7 +157,87 @@ LinkArray realLinksParser() {
 
     fclose(file);
 
-    x.data = links;
+    x.data = realloc(links, count * sizeof(Link));
     x.size = count;
     return x;
+}
+
+
+BoundaryCondition* boundaryParser(int* count) {
+    FILE* file = fopen("inputs", "r");
+    if (!file) {
+        perror("Error opening inputs file");
+        exit(EXIT_FAILURE);
+    }
+
+    char line[1024];
+    int capacity = 8;
+    int size = 0;
+    BoundaryCondition* list = malloc(capacity * sizeof(BoundaryCondition));
+    if (!list) {
+        perror("malloc failed");
+        exit(EXIT_FAILURE);
+    }
+
+    int inSection = 0;
+    while (fgets(line, sizeof(line), file)) {
+        removeExcess(line);
+        if (strlen(line) == 0) continue;
+
+        if (!inSection) {
+            if (strcmp(line, "NODE CONDITIONS") == 0) {
+                inSection = 1;
+            }
+            continue;
+        }
+
+        char type;
+        int node;
+        double value;
+        if (sscanf(line, "%c(%d) = %lf", &type, &node, &value) == 3) {
+            if (type != 'p' && type != 's') {
+                fprintf(stderr, "ERROR: Invalid boundary condition type '%c'\n", type);
+                exit(EXIT_FAILURE);
+            }
+
+            int conflictType = 0;
+            for (int i = 0; i < size; ++i) {
+                if (list[i].node == node) {
+                    if (list[i].type == type) {
+                        // Same type and node = error
+                        fprintf(stderr,
+                            "ERROR: Duplicate boundary condition %c(%d)\n", type, node);
+                        exit(EXIT_FAILURE);
+                    } else {
+                        // Same node, different type = warning
+                        conflictType = 1;
+                    }
+                }
+            }
+
+            if (conflictType) {
+                fprintf(stderr,
+                    "WARNING: Both P(%d) and S(%d) are defined. This may overconstrain the node.\n",
+                    node, node);
+            }
+
+            if (size >= capacity) {
+                capacity *= 2;
+                list = realloc(list, capacity * sizeof(BoundaryCondition));
+                if (!list) {
+                    perror("realloc failed");
+                    exit(EXIT_FAILURE);
+                }
+            }
+
+            list[size++] = (BoundaryCondition){node, type, value};
+        } else {
+            fprintf(stderr, "ERROR: Invalid boundary condition line: '%s'\n", line);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    fclose(file);
+    *count = size;
+    return list;
 }
