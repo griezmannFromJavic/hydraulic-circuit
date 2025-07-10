@@ -10,7 +10,7 @@ void removeExcess(char* line);
 Link parseLink(char* line, FILE* file);
 LagrangeData parsePoints(FILE* file);
 Link* parseLinks(FILE* file, int* linkCount);
-LinkArray realGraphParser();
+LinkArray realGraphParser(char* input);
 BoundaryCondition* boundaryParser(int* count);
 
 #endif // PARSER_H

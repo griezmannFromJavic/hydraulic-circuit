@@ -27,7 +27,7 @@ link6: 4 -> 5
 [0.0, 0.0], [1.0, 1.0]
 
 link7: 2 -> 5 # example of an active element (pump or battery)
-[0.0, 2.0], [1.0, 1.0], [2.0, -2.0]
+[1.0, 2.0], [1.0, 1.0], [2.0, -2.0]
 
 link10: 3 -> 4 # int type input should be read as float
 [0, 0] [1, 1] [3, 9]

@@ -1,8 +1,6 @@
 /*================================== ABOUT ==================================\*
 
-Input file parser. Written mostly using ChatGPT.
-
-I need to add Boundary conditions parser, now needed in solver.c
+Input file parser.
 
 \*===========================================================================*/
 
@@ -114,12 +112,12 @@ Link parseLink(char* line, FILE* file) {
     return l;
 }
 
-LinkArray realGraphParser() {
+LinkArray realGraphParser(char* input) {
     LinkArray x;
     x.data = NULL;
     x.size = 0;
 
-    FILE *file = fopen("inputs", "r");
+    FILE *file = fopen(input, "r");
     if (file == NULL) {
         perror("Error opening file");
         return x;

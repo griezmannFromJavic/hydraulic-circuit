@@ -5,4 +5,4 @@ link8: 1 -> 2
 
 NODE CONDITIONS
     p(1) = 50.0
-    p(2) = 0.0
+    p(2) = 10.0

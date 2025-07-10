@@ -20,9 +20,6 @@ Pressure boundary condition will be imposed, the residual check will be compared
 calculated chord pressure drop and the current iteration dp.
 
 
-
-
-
 \*======================================================================================*/
 
 #include "solver.h"
@@ -180,7 +177,8 @@ DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
 	return p;
 }
 
-
+// to be moved in "helper.c" or later in "postprocessor.c"
+// not necessary for solver.
 DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root) {
 	DoubleArray flows = linkFlows(loopFlows, chords, tree, graph);
 	DoubleArray p;
@@ -191,4 +189,28 @@ DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleA
     checked[nodeIndex(root, nodes)] = true;
 
 	return pressuresDFS(tree, graph, nodes, checked, root, flows, p);
+}
+
+
+double sumLoopPressureDrops(LinkArray loop, DoubleArray direction, LinkArray graph, DoubleArray flows) {
+    // returns 0 for zero loop flow which ought to be wrong
+    double result = 0;
+    for (int i = 0; i < loop.size; i++) {
+        Link curr = loop.data[i];
+        int ind = linkIndex(curr, graph);
+        if (curr.type == 'r') {
+            result += lagrangePolynomial(curr.lData, flows.data[ind]) * direction.data[ind];
+        } else if (curr.type == 'p') {
+            printf("BCVALUE: %f\n", curr.bcValue);
+            result += curr.bcValue * direction.data[ind];
+        } else {
+            printf("\n    ERROR in sumLoopPressureDrops\n\n");
+        }
+        printf("%f:  ", result);
+
+        printf("%s:  ", curr.name);
+        printf("%f, %f\n", flows.data[ind], direction.data[ind]);
+    }
+    printf("____________\n");
+    return result;
 }

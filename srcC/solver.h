@@ -17,5 +17,6 @@ int nodeIndex(int node, IntArray nodes);
 
 DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root);
 
+double sumLoopPressureDrops(LinkArray loop, DoubleArray direction, LinkArray graph, DoubleArray flows);
 
 #endif // SOLVER_H
