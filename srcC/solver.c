@@ -192,6 +192,11 @@ DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleA
 }
 
 
+
+
+
+
+// working
 double sumLoopPressureDrops(LinkArray loop, DoubleArray direction, LinkArray graph, DoubleArray flows) {
     // returns 0 for zero loop flow which ought to be wrong
     double result = 0;
