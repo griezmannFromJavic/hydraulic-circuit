@@ -1,9 +1,7 @@
 LINKS
 
 link8: 1 -> 2
-[0.0, 0.0], [1.7, 2.3] # this link contains (the minimum of) two interpolation points (a line)
-
-
+[0.0, 0.0], [1.7, 2.3]
 
 NODE CONDITIONS
     p(1) = 50.0

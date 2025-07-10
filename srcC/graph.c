@@ -7,13 +7,13 @@ Network topology definition and related functions.
 
 
 #include "graph.h"
-#include "parser.h"
+// #include "parser.h"
 #include "helper.h"
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <math.h>
+// #include <math.h>
 #include <string.h>
 
 
@@ -194,9 +194,9 @@ LinkArray findTreePath(LinkArray tree, Link chord) {
 }
 */
 
-/*
-LinkArray treePathDFS(LinkArray tree, bool* passed, int finish, int curr, LinkArray path, DoubleArray* direction) {
-    printf("%d\n", curr);
+
+LinkArray treePathDFS(LinkArray tree, bool* passed, int finish,
+    int curr, LinkArray path, DoubleArray* direction) {
     if (curr == finish) {
         return path;
     }
@@ -218,9 +218,11 @@ LinkArray treePathDFS(LinkArray tree, bool* passed, int finish, int curr, LinkAr
             return treePathDFS(tree, newPassed, finish, tree.data[i].inletNode, path, direction);
         }
     }
+    return path;
 }
-*/
 
+
+/*
 LinkArray treePathDFS(LinkArray tree, bool* passed, int finish, int curr, LinkArray path, DoubleArray* direction) {
     bool* newPassed = malloc(tree.size * sizeof(bool));
     memcpy(newPassed, passed, tree.size * sizeof(bool));
@@ -242,11 +244,11 @@ LinkArray treePathDFS(LinkArray tree, bool* passed, int finish, int curr, LinkAr
     }
     return path;
 }
+*/
 
 LinkArray findTreePath(LinkArray tree, Link chord, DoubleArray* direction) {
     LinkArray path;
-    //printf("%d\n", tree.size);
-    path.data = malloc(tree.size * sizeof(Link));
+    path.data = malloc(10 * tree.size * sizeof(Link)); // overallocating. needs fix
     path.size = 1;
     path.data[0] = chord;
 

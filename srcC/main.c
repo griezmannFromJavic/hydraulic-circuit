@@ -16,7 +16,7 @@ upper idea must be implemented
 
 
 #include "parser.h"
-#include "lagrange.h"
+// #include "lagrange.h"
 #include "graph.h"
 #include "helper.h"
 #include "solver.h"
@@ -35,7 +35,7 @@ int main() {
     printBoundaryConditions(BCs, bcCount);
 
     LinkArray ficticiousLinks = fictitiousTree(BCs, bcCount);
-	printf("ficticious test:      ");
+	printf("ficticious links:     ");
 	printLinkArray(ficticiousLinks);
 
 	LinkArray graph = mergeGraphs(realLinks, ficticiousLinks);
@@ -55,14 +55,14 @@ int main() {
 	printIntArray(nodes);
 
 
-	DoubleArray* direction0 = malloc(sizeof(DoubleArray));
-	direction0->size = 0;
-    LinkArray path0 = findTreePath(tree, chords.data[0], direction0);
+	DoubleArray direction0;
+	direction0.size = 0;
+    LinkArray path0 = findTreePath(tree, chords.data[0], &direction0);
 	printf("path from chord 0:    ");
     printLinkArray(path0);
 
     printf("path directions:      ");
-    printDoubleArray(*direction0);
+    printDoubleArray(direction0);
 
 
     DoubleArray loopFlows;

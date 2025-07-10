@@ -34,19 +34,14 @@ calculated chord pressure drop and the current iteration dp.
 DoubleArray linkFlows(DoubleArray loopFlows, LinkArray chords, LinkArray tree, LinkArray graph) { // trouble with direction[i] being 0
 	DoubleArray result;
 	result.size = graph.size;
-	//printf("\naa1\n\n");
-	//printf("%d, %d\n", graph.size, sizeof(double));
 	result.data = calloc(graph.size, sizeof(double)); // init to 0
-    //printf("\naa2\n\n");
 	DoubleArray direction;
 
 
 	LinkArray path;
 
 	for (int loop = 0; loop < chords.size; loop++) {
-	    printf("\naa\n\n");
 		path = findTreePath(tree, chords.data[loop], &direction);
-		printDoubleArray(direction);
 		for (int l = 0; l < path.size; l++) {
 			Link pathLink = path.data[l];
 			for (int i = 0; i < graph.size; i++) {
