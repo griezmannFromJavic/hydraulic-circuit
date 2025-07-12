@@ -31,6 +31,60 @@ newton-rapson breaks on gradient == 0. in that case reset the estimation to 0 or
 #include "graph.h"
 #include "lagrange.h"
 
+// #include <lapacke.h>
+
+
+DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
+                         bool* checked, int node, DoubleArray flows, DoubleArray p) {
+
+	for (int l = 0; l < tree.size; l++) {
+		Link link = tree.data[l];
+		if (link.inletNode == node && !checked[nodeIndex(link.outletNode, nodes)]) {
+		    if (link.type == 'r') {
+		        p.data[nodeIndex(link.outletNode, nodes)] =
+			    p.data[nodeIndex(link.inletNode, nodes)] +
+			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
+		    } else if (link.type == 'p') {
+		        p.data[nodeIndex(link.outletNode, nodes)] =
+			    p.data[nodeIndex(link.inletNode, nodes)] +
+			    link.bcValue;
+		    }
+
+			checked[nodeIndex(link.outletNode, nodes)] = true;
+			pressuresDFS(tree, graph, nodes, checked, link.outletNode, flows, p);
+		}
+		if (link.outletNode == node && !checked[nodeIndex(link.inletNode, nodes)]) {
+		    if (link.type == 'r') {
+			    p.data[nodeIndex(link.inletNode, nodes)] =
+			    p.data[nodeIndex(link.outletNode, nodes)] -
+			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
+		    } else if (link.type == 'p') {
+		        p.data[nodeIndex(link.outletNode, nodes)] =
+			    p.data[nodeIndex(link.inletNode, nodes)] -
+			    link.bcValue;
+		    }
+
+			checked[nodeIndex(link.inletNode, nodes)] = true;
+			pressuresDFS(tree, graph, nodes, checked, link.inletNode, flows, p);
+		}
+	}
+	return p;
+}
+
+// to be moved in "helper.c" or later in "postprocessor.c"
+// not necessary for solver.
+DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root) {
+	DoubleArray flows = linkFlows(loopFlows, chords, tree, graph);
+	DoubleArray p;
+	p.size = nodes.size;
+	p.data = malloc(p.size * sizeof(double));
+    bool* checked = calloc(nodes.size, sizeof(bool));
+
+    checked[nodeIndex(root, nodes)] = true;
+
+	return pressuresDFS(tree, graph, nodes, checked, root, flows, p);
+}
+
 
 DoubleArray linkFlows(DoubleArray loopFlows, LinkArray chords, LinkArray tree, LinkArray graph) { // trouble with direction[i] being 0
 	DoubleArray result;
@@ -118,103 +172,6 @@ int nodeIndex(int node, IntArray nodes) {
 	return -1;
 }
 
-/*
-DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
-                         bool* checked, int node, DoubleArray flows, DoubleArray p) {
-    // pointers to the inlet and outlet node indexes should be precalculated
-    // SINCE ONE PRESSURE BOUNDARY CONDITION MUST BE DEFINED, THAT LINK WILL BE CHOSEN FOR TREE TRAVERSAL.
-
-    bool allChecked = true;
-    for (int i = 0; i < nodes.size; i++) {
-        allChecked = allChecked && checked[i]; // break may be added
-    }
-
-	if (allChecked) return p;
-
-	for (int l = 0; l < tree.size; l++) {
-		Link link = tree.data[l];
-		if (link.inletNode == node && !checked[nodeIndex(link.outletNode, nodes)]) {
-		    if (link.type == 'r') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.outletNode, nodes)] = true;
-			return pressuresDFS(tree, graph, nodes, checked, link.outletNode, flows, p);
-		}
-		if (link.outletNode == node && !checked[nodeIndex(link.inletNode, nodes)]) {
-		    if (link.type == 'r') {
-			    p.data[nodeIndex(link.inletNode, nodes)] =
-			    p.data[nodeIndex(link.outletNode, nodes)] -
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] -
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.inletNode, nodes)] = true;
-			return pressuresDFS(tree, graph, nodes, checked, link.inletNode, flows, p);
-		}
-	}
-}
-*/
-
-DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
-                         bool* checked, int node, DoubleArray flows, DoubleArray p) {
-
-	for (int l = 0; l < tree.size; l++) {
-		Link link = tree.data[l];
-		if (link.inletNode == node && !checked[nodeIndex(link.outletNode, nodes)]) {
-		    if (link.type == 'r') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.outletNode, nodes)] = true;
-			pressuresDFS(tree, graph, nodes, checked, link.outletNode, flows, p);
-		}
-		if (link.outletNode == node && !checked[nodeIndex(link.inletNode, nodes)]) {
-		    if (link.type == 'r') {
-			    p.data[nodeIndex(link.inletNode, nodes)] =
-			    p.data[nodeIndex(link.outletNode, nodes)] -
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] -
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.inletNode, nodes)] = true;
-			pressuresDFS(tree, graph, nodes, checked, link.inletNode, flows, p);
-		}
-	}
-	return p;
-}
-
-// to be moved in "helper.c" or later in "postprocessor.c"
-// not necessary for solver.
-DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root) {
-	DoubleArray flows = linkFlows(loopFlows, chords, tree, graph);
-	DoubleArray p;
-	p.size = nodes.size;
-	p.data = malloc(p.size * sizeof(double));
-    bool* checked = calloc(nodes.size, sizeof(bool));
-
-    checked[nodeIndex(root, nodes)] = true;
-
-	return pressuresDFS(tree, graph, nodes, checked, root, flows, p);
-}
 
 double sumLoopPressureDrops(LinkArray loop, LinkArray graph, DoubleArray direction, DoubleArray pressureDrops) {
     double result = 0;
@@ -225,33 +182,6 @@ double sumLoopPressureDrops(LinkArray loop, LinkArray graph, DoubleArray directi
     return result;
 }
 
-
-
-
-
-
-// in progressssss
-/*
-DoubleArray residual(DoubleArray assumedLoopFlows, LinkArray graph, LinkArray chords, LinkArray tree) {
-    DoubleArray* directionVectors = malloc(chords.size * sizeof(DoubleArray));
-    LinkArray* loops = malloc(chords.size * sizeof(LinkArray));
-    DoubleArray errors;
-    errors.size = chords.size;
-    errors.data = malloc(chords.size * sizeof(double));
-
-    for (int i = 0; i < chords.size; i++) {
-       	DoubleArray direction;
-        direction.size = 0;
-        LinkArray path = findTreePath(tree, chords.data[i], &direction);
-
-        loops[i] = path;
-        directionVectors[i] = direction;
-
-        errors.data[i] = sumLoopPressureDrops(path, graph, direction, dps);
-    }
-    return errors;
-}
-*/
 
 
 

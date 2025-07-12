@@ -17,6 +17,12 @@ typedef struct {
 } DoubleArray;
 
 typedef struct {
+    double** data;
+    int rows;
+    int cols;
+} DoubleMatrix;
+
+typedef struct {
     int node;
     char type;
     double value;

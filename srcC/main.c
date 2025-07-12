@@ -56,57 +56,6 @@ int main() {
 
 
 
-    /* TRANSFFERING IN "solver.c" in func iter()
-     *
-     *
-     *
-     *
-     DoubleArray loopFlows;
-     // double assumed[] = {10.2, 5.0, 1.0, 20.0, -15.0};
-     double* assumed = calloc(chords.size, sizeof(double)); // initial guess = zero vector
-     loopFlows.data = assumed;
-     loopFlows.size = chords.size;
-     DoubleArray flows = linkFlows(loopFlows, chords, tree, graph);
-     printf("flows:                ");
-     printDoubleArray(flows);
-
-     DoubleArray dps = pressureDrops(flows, graph);
-     printf("pressure drops:       ");
-     printDoubleArray(dps);
-
-     DoubleArray p = pressures(graph, tree, chords, loopFlows, nodes, 0);
-
-     printf("pressures:            ");
-     printDoubleArray(p);
-
-
-    // generating loops with cooresponding direction vectors
-    DoubleArray* directionVectors = malloc(chords.size * sizeof(DoubleArray));
-    LinkArray* loops = malloc(chords.size * sizeof(LinkArray));
-    DoubleArray errors;
-    errors.size = chords.size;
-    errors.data = malloc(chords.size * sizeof(double));
-
-    for (int i = 0; i < chords.size; i++) {
-       	DoubleArray direction;
-        direction.size = 0;
-        LinkArray path = findTreePath(tree, chords.data[i], &direction);
-        printf("path from chord %d:    ", i);
-        printLinkArray(path);
-
-        loops[i] = path;
-        directionVectors[i] = direction;
-
-        errors.data[i] = sumLoopPressureDrops(path, graph, direction, dps);
-    }
-
-    printf("pressure errors of a given loop:     ");
-    printDoubleArray(errors);
-    */
-
-
-
-
 
 	return 0;
 }
