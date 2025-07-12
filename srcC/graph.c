@@ -108,7 +108,7 @@ Link findLink(int node1, int node2, LinkArray graph) {
 
 int linkIndex(Link link, LinkArray graph) {
     for (int i = 0; i < graph.size; i++) {
-        if (isSameLink(link, graph.data[i])) return i;
+        if (isSameLink(link, graph.data[i])) return i; // maybe implement pointer arithmetic
     }
     printf("ERROR: Link %s does not exist in graph.", link.name);
     return -1;

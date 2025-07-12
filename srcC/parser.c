@@ -1,6 +1,8 @@
 /*================================== ABOUT ==================================\*
 
-Input file parser.
+Input file detect
+
+Need to implemet function that is looking for repeated x values of lagrange polynomials
 
 \*===========================================================================*/
 

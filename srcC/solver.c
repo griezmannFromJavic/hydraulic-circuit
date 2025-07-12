@@ -19,6 +19,10 @@ Matrix system must be constructed such that all BCs are satisfied.
 Pressure boundary condition will be imposed, the residual check will be compared to the
 calculated chord pressure drop and the current iteration dp.
 
+Loop flows may be calculated without solving apsolute pressures. Apsolute pressures will be
+calculated after the solver returns solution.
+
+newton-rapson breaks on gradient == 0. in that case reset the estimation to 0 or offset it slightly
 
 \*======================================================================================*/
 
@@ -72,7 +76,28 @@ DoubleArray pressureDrops(DoubleArray flows, LinkArray graph) {
 	return result;
 }
 
-// WORKING
+
+
+// IMPLEMENTING FOR SOLVER
+void pressureDropsAndGradients(DoubleArray flows, LinkArray graph, DoubleArray* dps, DoubleArray* DdpPerDx) {
+	// WORKING
+	dps->data = malloc(flows.size * sizeof(double));
+	DdpPerDx->data = malloc(flows.size * sizeof(double));
+	dps->size = flows.size;
+	DdpPerDx->size = flows.size;
+
+	for (int i = 0; i < flows.size; i++) {
+		double flow = flows.data[i];
+		LagrangeData d = graph.data[i].lData;
+		if (graph.data[i].type == 'r') {
+		    dps->data[i] = lagrangePolynomial(d, flow);
+			DdpPerDx->data[i] = lagrangeDerivative(d, flow);
+		} else if (graph.data[i].type == 'p') {
+		    dps->data[i] = graph.data[i].bcValue;
+			DdpPerDx ->data[i] = 0; // possibly dangerous edge case. might couse division by zero in some functions
+		}
+	}
+}
 
 bool isChecked(int node, IntArray nodes, bool* checked) {
 	for (int i = 0; i < nodes.size; i++) {
@@ -191,31 +216,53 @@ DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleA
 	return pressuresDFS(tree, graph, nodes, checked, root, flows, p);
 }
 
-
-
-
-
-
-// working
-double sumLoopPressureDrops(LinkArray loop, DoubleArray direction, LinkArray graph, DoubleArray flows) {
-    // returns 0 for zero loop flow which ought to be wrong
+double sumLoopPressureDrops(LinkArray loop, LinkArray graph, DoubleArray direction, DoubleArray pressureDrops) {
     double result = 0;
     for (int i = 0; i < loop.size; i++) {
-        Link curr = loop.data[i];
-        int ind = linkIndex(curr, graph);
-        if (curr.type == 'r') {
-            result += lagrangePolynomial(curr.lData, flows.data[ind]) * direction.data[ind];
-        } else if (curr.type == 'p') {
-            printf("BCVALUE: %f\n", curr.bcValue);
-            result += curr.bcValue * direction.data[ind];
-        } else {
-            printf("\n    ERROR in sumLoopPressureDrops\n\n");
-        }
-        printf("%f:  ", result);
-
-        printf("%s:  ", curr.name);
-        printf("%f, %f\n", flows.data[ind], direction.data[ind]);
+        int ind = linkIndex(loop.data[i], graph);
+        result += pressureDrops.data[ind] * direction.data[i];
     }
-    printf("____________\n");
     return result;
+}
+
+
+
+
+
+
+// in progressssss
+/*
+DoubleArray residual(DoubleArray assumedLoopFlows, LinkArray graph, LinkArray chords, LinkArray tree) {
+    DoubleArray* directionVectors = malloc(chords.size * sizeof(DoubleArray));
+    LinkArray* loops = malloc(chords.size * sizeof(LinkArray));
+    DoubleArray errors;
+    errors.size = chords.size;
+    errors.data = malloc(chords.size * sizeof(double));
+
+    for (int i = 0; i < chords.size; i++) {
+       	DoubleArray direction;
+        direction.size = 0;
+        LinkArray path = findTreePath(tree, chords.data[i], &direction);
+
+        loops[i] = path;
+        directionVectors[i] = direction;
+
+        errors.data[i] = sumLoopPressureDrops(path, graph, direction, dps);
+    }
+    return errors;
+}
+*/
+
+
+
+
+
+
+
+double manhattan(DoubleArray error) {
+    double res = 0;
+    for (int i = 0; i < error.size; i++) {
+        res += error.data[i] * error.data[i];
+    }
+    return res;
 }
