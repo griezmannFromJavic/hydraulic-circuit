@@ -8,22 +8,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
-    bool* checked, int node, DoubleArray flows, DoubleArray p);
-
-DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root);
-
 DoubleArray linkFlows(DoubleArray loopFlows, LinkArray chords, LinkArray tree, LinkArray graph);
 
 DoubleArray pressureDrops(DoubleArray flows, LinkArray graph);
 
 void pressureDropsAndGradients(DoubleArray flows, LinkArray graph, DoubleArray* dps, DoubleArray* DdpPerDx);
 
-int nodeIndex(int node, IntArray nodes);
-
-double sumLoopPressureDrops(LinkArray loop, LinkArray graph, DoubleArray direction, DoubleArray pressureDrops);
-
-//DoubleArray residual(DoubleArray assumedLoopFlows, LinkArray graph, LinkArray chords, LinkArray tree);
+double dPdX(LinkArray loopM, LinkArray loopN, double x);
 
 double manhattan(DoubleArray error);
 

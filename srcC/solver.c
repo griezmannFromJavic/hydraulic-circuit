@@ -34,58 +34,6 @@ newton-rapson breaks on gradient == 0. in that case reset the estimation to 0 or
 // #include <lapacke.h>
 
 
-DoubleArray pressuresDFS(LinkArray tree, LinkArray graph, IntArray nodes,
-                         bool* checked, int node, DoubleArray flows, DoubleArray p) {
-
-	for (int l = 0; l < tree.size; l++) {
-		Link link = tree.data[l];
-		if (link.inletNode == node && !checked[nodeIndex(link.outletNode, nodes)]) {
-		    if (link.type == 'r') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] +
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.outletNode, nodes)] = true;
-			pressuresDFS(tree, graph, nodes, checked, link.outletNode, flows, p);
-		}
-		if (link.outletNode == node && !checked[nodeIndex(link.inletNode, nodes)]) {
-		    if (link.type == 'r') {
-			    p.data[nodeIndex(link.inletNode, nodes)] =
-			    p.data[nodeIndex(link.outletNode, nodes)] -
-			    lagrangePolynomial(link.lData, flows.data[linkIndex(link, graph)]);
-		    } else if (link.type == 'p') {
-		        p.data[nodeIndex(link.outletNode, nodes)] =
-			    p.data[nodeIndex(link.inletNode, nodes)] -
-			    link.bcValue;
-		    }
-
-			checked[nodeIndex(link.inletNode, nodes)] = true;
-			pressuresDFS(tree, graph, nodes, checked, link.inletNode, flows, p);
-		}
-	}
-	return p;
-}
-
-// to be moved in "helper.c" or later in "postprocessor.c"
-// not necessary for solver.
-DoubleArray pressures(LinkArray graph, LinkArray tree, LinkArray chords, DoubleArray loopFlows, IntArray nodes, int root) {
-	DoubleArray flows = linkFlows(loopFlows, chords, tree, graph);
-	DoubleArray p;
-	p.size = nodes.size;
-	p.data = malloc(p.size * sizeof(double));
-    bool* checked = calloc(nodes.size, sizeof(bool));
-
-    checked[nodeIndex(root, nodes)] = true;
-
-	return pressuresDFS(tree, graph, nodes, checked, root, flows, p);
-}
-
-
 DoubleArray linkFlows(DoubleArray loopFlows, LinkArray chords, LinkArray tree, LinkArray graph) { // trouble with direction[i] being 0
 	DoubleArray result;
 	result.size = graph.size;
@@ -163,25 +111,57 @@ bool isChecked(int node, IntArray nodes, bool* checked) {
 	return false;
 }
 
-int nodeIndex(int node, IntArray nodes) {
-	int index;
-	for (index = 0; index < nodes.size; index++) {
-		if (nodes.data[index] == node) return index;
-	}
-	printf("ERROR: Node %d not in given nodes array!", node);
-	return -1;
-}
 
-
-double sumLoopPressureDrops(LinkArray loop, LinkArray graph, DoubleArray direction, DoubleArray pressureDrops) {
+double dPdX(LinkArray loopM, LinkArray loopN, double x) {
+    //partial derivative of loop M pressure drop with respect to loop flow N at value x
     double result = 0;
-    for (int i = 0; i < loop.size; i++) {
-        int ind = linkIndex(loop.data[i], graph);
-        result += pressureDrops.data[ind] * direction.data[i];
+    for (int m = 0; m < loopM.size; m++) {
+        Link currM = loopM.data[m];
+        for (int n = 0; n < loopN.size; n++) {
+            Link currN = loopN.data[n];
+            if (currM.inletNode == currN.inletNode && currM.outletNode == currN.outletNode) {
+                result += lagrangeDerivative(currM.lData, x);
+            }
+            if (currM.inletNode == currN.outletNode && currM.outletNode == currN.inletNode) {
+                result -= lagrangeDerivative(currM.lData, x);
+            }
+        }
     }
-    return result;
 }
 
+double loopPressureDrop(LinkArray loop, LinkArray graph, DoubleArray flows) {
+    double dp = 0;
+    for (int i = 0; i < loop.size; i++) {
+        Link loopLink = loop.data[i];
+        for (int j = 0; j < graph.size; j++) {
+            Link graphLink = graph.data[j];
+                if (loopLink.inletNode == graphLink.inletNode && loopLink.outletNode == graphLink.outletNode) {
+                    dp += lagrangePolynomial(loopLink.lData, flows.data[j]);
+                    break;
+                }
+                if (loopLink.inletNode == graphLink.outletNode && loopLink.outletNode == graphLink.inletNode) {
+                    dp -= lagrangePolynomial(loopLink.lData, flows.data[j]);
+                    break;
+                }
+        }
+    }
+    return dp;
+}
+
+void matrixSystemInputs(LinkArray* loops, DoubleArray* directions, DoubleArray guess, int size, DoubleMatrix* A, DoubleArray* b) {
+    A->data = malloc(size * sizeof(double*));
+    A->rows = size;
+    A->cols = size;
+    b->data = malloc(size * sizeof(double));
+    b->size = size;
+    for (int i = 0; i < size; i++) {
+        // b->data =
+        for (int j = 0; j < size; j++) {
+            A->data[i][j] = dPdX(loops[i], loops[j], guess.data[i]);
+        }
+
+    }
+}
 
 
 

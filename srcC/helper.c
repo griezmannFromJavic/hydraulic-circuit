@@ -48,6 +48,14 @@ void printDoubleArray(DoubleArray x) {
     printf("%f]\n", x.data[i]);
 }
 
+double sumDoubleArray(DoubleArray x) {
+    double result = 0.0;
+    for (int i = 0; i < x.size; i++) {
+        result += x.data[i];
+    }
+    return result;
+}
+
 void printBoundaryConditions(BoundaryCondition* BCs, int bcCount) {
     printf("[");
     int i;

@@ -39,6 +39,8 @@ void printIntArray(IntArray x);
 
 void printDoubleArray(DoubleArray x);
 
+double sumDoubleArray(DoubleArray x);
+
 void printBoundaryConditions(BoundaryCondition* BCs, int bcCount);
 
 bool neighbours(

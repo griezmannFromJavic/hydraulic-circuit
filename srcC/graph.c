@@ -270,9 +270,6 @@ LinkArray findTreePath(LinkArray tree, Link chord, DoubleArray* direction) {
     return treePathDFS(tree, passed, finish, curr, path, direction);
 }
 
-
-
-
 // working on the code above
 
 LinkArray nonTreeLinks(LinkArray graph, LinkArray tree) {

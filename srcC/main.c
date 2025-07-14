@@ -53,8 +53,15 @@ int main() {
 	// printf("nodes:                ");
 	// printIntArray(nodes);
 
+	// working
+	DoubleArray guess;
+	guess.data = calloc(chords.size, sizeof(double));
+	guess.size = chords.size;
 
+	DoubleArray flows = linkFlows(guess, chords, tree, graph);
+	printDoubleArray(flows);
 
+	DoubleArray dps = pressureDrops(flows, graph);
 
 
 	return 0;
